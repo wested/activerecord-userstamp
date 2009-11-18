@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "LICENSE",
      "README",
      "Rakefile",
+     "VERSION",
      "init.rb",
      "lib/migration_helper.rb",
      "lib/stampable.rb",
@@ -68,7 +69,8 @@ Gem::Specification.new do |s|
      "test/models/user.rb",
      "test/schema.rb",
      "test/stamping_test.rb",
-     "test/userstamp_controller_test.rb"
+     "test/userstamp_controller_test.rb",
+     "userstamp.gemspec"
   ]
   s.homepage = %q{http://github.com/delynn/userstamp}
   s.rdoc_options = ["--charset=UTF-8"]
