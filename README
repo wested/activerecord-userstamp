@@ -12,10 +12,8 @@ created, updated, or deleted by 'stampers'.
 
 
 == Installation
-Installation of the plugin can be done using the built in Rails plugin script. Issue the following
-command from the root of your application:
-
-  script/plugin install git://github.com/delynn/userstamp.git
+ - As Rails plugin: `script/plugin install git://github.com/delynn/userstamp.git `
+ - As gem: ` sudo gem install userstamp -s http://gemcutter.org `
 
 Once installed you will need to restart your application for the plugin to be loaded into the Rails
 environment.
