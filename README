@@ -37,7 +37,7 @@ method for very easily doing this:
     def self.up
       create_table :users, :force => true do |t|
         t.timestamps
-        t.userstamps
+        t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
         t.name
       end
     end
@@ -51,7 +51,7 @@ method for very easily doing this:
     def self.up
       create_table :posts, :force => true do |t|
         t.timestamps
-        t.userstamps
+        t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
         t.title
       end
     end
@@ -131,10 +131,10 @@ If you need to customize the columns that are stamped, the <tt>stampable</tt> me
 completely customized. Here's an quick example:
 
   class Post < ActiveRecord::Base
-    acts_as_stampable :stamper_class_name => :person,
-                      :creator_attribute  => :create_user,
-                      :updater_attribute  => :update_user,
-                      :deleter_attribute  => :delete_user
+    stampable :stamper_class_name => :person,
+              :creator_attribute  => :create_user,
+              :updater_attribute  => :update_user,
+              :deleter_attribute  => :delete_user
   end
 
 If you are upgrading your application from the old version of Userstamp, there is a compatibility
