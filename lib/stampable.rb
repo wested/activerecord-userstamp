@@ -61,16 +61,20 @@ module Ddb #:nodoc:
         #               :creator_attribute  => :create_user,
         #               :updater_attribute  => :update_user,
         #               :deleter_attribute  => :delete_user
+        #               :deleter            => true
         #   end
         #
         # The method will automatically setup all the associations, and create <tt>before_save</tt>
         # and <tt>before_create</tt> filters for doing the stamping.
+        # By default, the deleter association and before filter are not defined unless you are using
+        # acts_as_paranoid or you set the :deleter_attribute or set the :deleter option to true.
         def stampable(options = {})
           defaults  = {
                         :stamper_class_name => :user,
                         :creator_attribute  => Ddb::Userstamp.compatibility_mode ? :created_by : :creator_id,
                         :updater_attribute  => Ddb::Userstamp.compatibility_mode ? :updated_by : :updater_id,
-                        :deleter_attribute  => Ddb::Userstamp.compatibility_mode ? :deleted_by : :deleter_id
+                        :deleter_attribute  => Ddb::Userstamp.compatibility_mode ? :deleted_by : :deleter_id,
+                        :deleter            => options.has_key?(:deleter_attribute) || defined?(Caboose::Acts::Paranoid) ? true : false
                       }.merge(options)
 
           self.stamper_class_name = defaults[:stamper_class_name].to_sym
@@ -81,14 +85,14 @@ module Ddb #:nodoc:
           class_eval do
             belongs_to :creator, :class_name => self.stamper_class_name.to_s.singularize.camelize,
                                  :foreign_key => self.creator_attribute
-                                 
+
             belongs_to :updater, :class_name => self.stamper_class_name.to_s.singularize.camelize,
                                  :foreign_key => self.updater_attribute
-                                 
+
             before_save     :set_updater_attribute
             before_create   :set_creator_attribute
-                                 
-            if defined?(Caboose::Acts::Paranoid)
+
+            if defaults[:deleter]
               belongs_to :deleter, :class_name => self.stamper_class_name.to_s.singularize.camelize,
                                    :foreign_key => self.deleter_attribute
               before_destroy  :set_deleter_attribute
