@@ -1,9 +1,20 @@
 require 'test/helper'
 
-class CompatibilityStampingTests < ActionController::TestCase
+class CompatibilityStampingTests < Test::Unit::TestCase  # :nodoc:
   def setup
     Ddb::Userstamp.compatibility_mode = true
     create_test_models
+  end
+
+  def test_comment_creation_with_stamped_integer
+    Person.stamper = @nicole.id
+    assert_equal @nicole.id, Person.stamper
+
+    comment = Comment.create(:comment => "Test Comment - 2")
+    assert_equal @nicole.id, comment.created_by
+    assert_equal @nicole.id, comment.updated_by
+    assert_equal @nicole, comment.creator
+    assert_equal @nicole, comment.updater
   end
 
   def test_comment_creation_with_stamped_object
@@ -14,17 +25,6 @@ class CompatibilityStampingTests < ActionController::TestCase
     assert_equal @delynn.id, comment.updated_by
     assert_equal @delynn, comment.creator
     assert_equal @delynn, comment.updater
-  end
-
-  def test_comment_creation_with_stamped_integer
-    Person.stamper = 2
-    assert_equal 2, Person.stamper
-
-    comment = Comment.create(:comment => "Test Comment - 2")
-    assert_equal @nicole.id, comment.created_by
-    assert_equal @nicole.id, comment.updated_by
-    assert_equal @nicole, comment.creator
-    assert_equal @nicole, comment.updater
   end
   
   def test_comment_updating_with_stamped_object
@@ -41,8 +41,8 @@ class CompatibilityStampingTests < ActionController::TestCase
   end
 
   def test_comment_updating_with_stamped_integer
-    Person.stamper = 2
-    assert_equal 2, Person.stamper
+    Person.stamper = @nicole.id
+    assert_equal @nicole.id, Person.stamper
 
     @first_comment.comment << " - Updated"
     @first_comment.save

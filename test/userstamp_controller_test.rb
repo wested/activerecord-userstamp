@@ -17,7 +17,7 @@ class PostsControllerTest < ActionController::TestCase
   end
 
   def test_update_with_multiple_requests
-    @request.session    = {:person_id => @delynn.id}
+    @request.session = {:person_id => @delynn.id}
     get :edit, :id => @first_post.id
     assert_response :success
 
@@ -38,7 +38,7 @@ class PostsControllerTest < ActionController::TestCase
     @second_request.env['REQUEST_METHOD'] = "POST"
     @second_request.action = 'update'
 
-    parameters = {:id => 1, :post => {:title => 'Different Second'}}
+    parameters = {:id => @first_post.id, :post => {:title => 'Different Second'}}
     @second_request.assign_parameters(@second_controller.class.controller_path, 'update', parameters)
     @second_request.session = ActionController::TestSession.new(@second_response.session)
     
@@ -49,7 +49,7 @@ class PostsControllerTest < ActionController::TestCase
     @second_request.set_REQUEST_URI(url.rewrite(options))
     @second_controller.process(@second_request, @second_response)
     
-    assert_equal    @nicole, @second_response.template.instance_variable_get("@post").updater
+    assert_equal @nicole, @second_response.template.instance_variable_get("@post").updater
   end
 end
 
