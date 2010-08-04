@@ -17,6 +17,10 @@ require 'test/schema'
 
 # load test framework
 require 'test/unit'
+begin
+  require 'redgreen'
+rescue LoadError
+end
 require 'active_support/test_case'
 require 'action_controller/test_case'
 require 'action_controller/test_process'

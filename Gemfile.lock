@@ -9,6 +9,7 @@ GEM
     activesupport (2.3.8)
     rack (1.1.0)
     rake (0.8.7)
+    redgreen (1.2.2)
     sqlite3-ruby (1.2.5)
 
 PLATFORMS
@@ -19,4 +20,5 @@ DEPENDENCIES
   activerecord
   activesupport
   rake
+  redgreen
   sqlite3-ruby
