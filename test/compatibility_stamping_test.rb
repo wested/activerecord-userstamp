@@ -1,17 +1,9 @@
-$:.unshift(File.dirname(__FILE__))
+require 'test/helper'
 
-require 'helpers/unit_test_helper'
-Ddb::Userstamp.compatibility_mode = true
-require 'models/user'
-require 'models/person'
-require 'models/post'
-require 'models/comment'
-
-class CompatibilityStampingTests< Test::Unit::TestCase  # :nodoc:
- fixtures :people, :comments 
-
+class CompatibilityStampingTests < ActionController::TestCase
   def setup
-    Person.stamper = @delynn
+    Ddb::Userstamp.compatibility_mode = true
+    create_test_models
   end
 
   def test_comment_creation_with_stamped_object

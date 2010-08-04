@@ -1,15 +1,8 @@
-$:.unshift(File.dirname(__FILE__))
-
-require 'helpers/unit_test_helper'
-require 'models/user'
-require 'models/person'
-require 'models/post'
-require 'models/comment'
+require 'test/helper'
 
 class StampingTests < Test::Unit::TestCase  # :nodoc:
-  fixtures :users, :people, :posts, :comments
-
   def setup
+    reset_to_defaults
     User.stamper = @zeus
     Person.stamper = @delynn
   end
@@ -25,8 +18,8 @@ class StampingTests < Test::Unit::TestCase  # :nodoc:
   end
 
   def test_person_creation_with_stamped_integer
-    User.stamper = 2
-    assert_equal 2, User.stamper
+    User.stamper = @nicole.id
+    assert_equal @nicole.id, User.stamper
 
     person = Person.create(:name => "Daniel")
     assert_equal @hera.id, person.creator_id
@@ -46,8 +39,8 @@ class StampingTests < Test::Unit::TestCase  # :nodoc:
   end
 
   def test_post_creation_with_stamped_integer
-    Person.stamper = 2
-    assert_equal 2, Person.stamper
+    Person.stamper = @nicole.id
+    assert_equal @nicole.id, Person.stamper
 
     post = Post.create(:title => "Test Post - 2")
     assert_equal @nicole.id, post.creator_id
@@ -70,8 +63,8 @@ class StampingTests < Test::Unit::TestCase  # :nodoc:
   end
 
   def test_person_updating_with_stamped_integer
-    User.stamper = 2
-    assert_equal 2, User.stamper
+    User.stamper = @hera.id
+    assert_equal @hera.id, User.stamper
 
     @delynn.name << " Berry"
     @delynn.save
@@ -96,8 +89,8 @@ class StampingTests < Test::Unit::TestCase  # :nodoc:
   end
 
   def test_post_updating_with_stamped_integer
-    Person.stamper = 2
-    assert_equal 2, Person.stamper
+    Person.stamper = @nicole.id
+    assert_equal @nicole.id, Person.stamper
 
     @first_post.title << " - Updated"
     @first_post.save

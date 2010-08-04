@@ -40,17 +40,4 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :deleted_by,     :integer
     t.column :deleted_at,     :datetime
   end
-
-  # Pings are created and updated by People,
-  # but they store their foreign keys as strings.
-  create_table :pings, :force => true do |t|
-    t.column :post_id,        :integer
-    t.column :ping,           :string
-    t.column :creator_name,   :string
-    t.column :created_at,     :datetime
-    t.column :updater_name,   :string
-    t.column :updated_at,     :datetime
-    t.column :deleter_name,   :string
-    t.column :deleted_at,     :datetime
-  end
 end
