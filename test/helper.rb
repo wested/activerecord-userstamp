@@ -33,7 +33,6 @@ require 'test/controllers/posts_controller'
 require 'test/models/user'
 require 'test/models/person'
 require 'test/models/post'
-require 'test/models/comment'
 
 ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
@@ -47,7 +46,6 @@ end
 def create_test_models
   User.delete_all
   Person.delete_all
-  Comment.delete_all
   Post.delete_all
 
   @zeus = User.create!(:name => 'Zeus')
@@ -59,6 +57,4 @@ def create_test_models
   Person.stamper = @delynn.id
 
   @first_post = Post.create!(:title => 'a title')
-
-  @first_comment = Comment.create!(:comment => 'a comment', :post => @first_post)
 end

@@ -2,8 +2,11 @@ require 'test/helper'
 
 class CompatibilityStampingTests < Test::Unit::TestCase  # :nodoc:
   def setup
-    Ddb::Userstamp.compatibility_mode = true
     create_test_models
+    Ddb::Userstamp.compatibility_mode = true
+    require 'test/models/comment'
+    Comment.delete_all
+    @first_comment = Comment.create!(:comment => 'a comment', :post => @first_post)
   end
 
   def test_comment_creation_with_stamped_integer
