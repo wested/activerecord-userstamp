@@ -1,0 +1,47 @@
+--- 
+dependencies: 
+  activerecord: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - active_record
+  sqlite3-ruby: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - sqlite3
+  rake: 
+    group: 
+    - :default
+    version: ">= 0"
+  actionpack: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - action_pack
+  activesupport: 
+    group: 
+    - :default
+    version: ">= 0"
+    require: 
+    - active_support
+specs: 
+- rake: 
+    version: 0.8.7
+- activesupport: 
+    version: 2.3.8
+- rack: 
+    version: 1.1.0
+- actionpack: 
+    version: 2.3.8
+- activerecord: 
+    version: 2.3.8
+- sqlite3-ruby: 
+    version: 1.2.5
+hash: 1f541de8c344199b12c4290dedbedcb9393e7ef1
+sources: 
+- Rubygems: 
+    uri: http://rubygems.org
