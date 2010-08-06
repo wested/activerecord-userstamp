@@ -100,4 +100,39 @@ class StampingTests < Test::Unit::TestCase  # :nodoc:
     assert_equal @delynn, @first_post.creator
     assert_equal @nicole, @first_post.updater
   end
+
+  def test_delete_post_sets_deleter_id
+    assert_equal nil, @first_post.deleted_at
+
+    Person.stamper = @nicole.id
+    assert_equal @nicole.id, Person.stamper
+
+    @first_post.destroy
+    @first_post.save
+    @first_post.reload
+
+    assert_not_equal nil, @first_post.deleted_at
+    assert_equal @nicole.id, @first_post.deleter_id
+  end
+  
+  def test_deleter_not_present_did_not_create_deleter_relation
+    @comment = Comment.create
+    assert_equal true, @comment.respond_to?('creator')
+    assert_equal true, @comment.respond_to?('updater')
+    assert_equal false, @comment.respond_to?('deleter')
+  end
+
+  def test_deleter_true_created_deleter_relation
+    assert_equal true, @first_post.respond_to?('creator')
+    assert_equal true, @first_post.respond_to?('updater')
+    assert_equal true, @first_post.respond_to?('deleter')
+  end
+
+  def test_deleter_attribute_set_created_deleter_relation
+    @foo = Foo.create
+    assert_equal true, @foo.respond_to?('creator')
+    assert_equal true, @foo.respond_to?('updater')
+    assert_equal true, @foo.respond_to?('deleter')
+  end
+
 end

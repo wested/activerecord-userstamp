@@ -40,4 +40,15 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :deleted_by,     :integer
     t.column :deleted_at,     :datetime
   end
+
+  # only used to test :stampable args
+  create_table :foos, :force => true do |t|
+    t.column :created_by,     :integer
+    t.column :created_at,     :datetime
+    t.column :updated_by,     :integer
+    t.column :updated_at,     :datetime
+    t.column :deleted_by,     :integer
+    t.column :deleted_at,     :datetime
+  end
+
 end

@@ -33,6 +33,7 @@ require 'test/controllers/posts_controller'
 require 'test/models/user'
 require 'test/models/person'
 require 'test/models/post'
+require 'test/models/foo'
 
 ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
