@@ -57,6 +57,4 @@ def create_test_models
   Person.stamper = @delynn.id
 
   @first_post = Post.create!(:title => 'a title')
-
-  @first_comment = Comment.create!(:comment => 'a comment', :post => @first_post)
 end
