@@ -17,6 +17,10 @@ require 'test/schema'
 
 # load test framework
 require 'test/unit'
+begin
+  require 'redgreen'
+rescue LoadError
+end
 require 'active_support/test_case'
 require 'action_controller/test_case'
 require 'action_controller/test_process'
@@ -29,7 +33,6 @@ require 'test/controllers/posts_controller'
 require 'test/models/user'
 require 'test/models/person'
 require 'test/models/post'
-require 'test/models/comment'
 
 ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
@@ -43,7 +46,6 @@ end
 def create_test_models
   User.delete_all
   Person.delete_all
-  Comment.delete_all
   Post.delete_all
 
   @zeus = User.create!(:name => 'Zeus')
