@@ -109,6 +109,7 @@ module Ddb #:nodoc:
           original_value = self.record_userstamp
           self.record_userstamp = false
           yield
+        ensure
           self.record_userstamp = original_value
         end
 
