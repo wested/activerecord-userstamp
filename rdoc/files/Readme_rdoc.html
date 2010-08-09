@@ -56,7 +56,7 @@
     </tr>
     <tr class="top-aligned-row">
       <td><strong>Last Update:</strong></td>
-      <td>Mon Aug 09 20:56:23 +0200 2010</td>
+      <td>Mon Aug 09 21:09:43 +0200 2010</td>
     </tr>
     </table>
   </div>
@@ -105,13 +105,9 @@ basis.
 </p>
 <h3>Example</h3>
 <p>
-Assume a weblog application has User and Post objects.
+Assume a weblog application has User and Post objects. # 1: Create the
+migrations for these objects
 </p>
-<ol>
-<li>Create the migrations for these objects
-
-</li>
-</ol>
 <pre>
   class CreateUsers &lt; ActiveRecord::Migration
     def self.up
@@ -139,12 +135,8 @@ Assume a weblog application has User and Post objects.
     end
   end
 </pre>
-<ol>
-<li>Users are going to manipulate Post&#8216;s, use the
-
-</li>
-</ol>
 <p>
+# 2: Users are going to manipulate Post&#8216;s, use the
 <tt>model_stamper</tt>:
 </p>
 <pre>
@@ -152,13 +144,8 @@ Assume a weblog application has User and Post objects.
     model_stamper
   end
 </pre>
-<ol>
-<li>Setup a controller to set the current user of the application. It&#8216;s
-
-</li>
-</ol>
 <p>
-recommended that you do this in your ApplicationController:
+# 3: Set the current user in the ApplicationController:
 </p>
 <pre>
   class ApplicationController &lt; ActionController::Base
@@ -246,56 +233,24 @@ quick example:
               :deleter_attribute  =&gt; :delete_user
   end
 </pre>
-<p>
-If you are upgrading your application from the old version of <a
-href="../classes/Userstamp.html">Userstamp</a>, there is a compatibility
-mode to have the plug-in use the old &quot;_by&quot; columns by default. To
-enable this mode, add the following line to the
-RAILS_ROOT/config/environment.rb file:
-</p>
+<h2>Upgrade from 1.x</h2>
 <pre>
-  Ddb::Userstamp.compatibility_mode = true
+ # config/environment.rb
+ Ddb::Userstamp.compatibility_mode = true
 </pre>
 <p>
-If you are having a difficult time getting the <a
-href="../classes/Userstamp.html">Userstamp</a> plug-in to work, I recommend
-you checkout the sample application that I created. You can find this
-application on <a
-href="http://github.com/delynn/userstamp_sample">GitHub</a>
-</p>
-<h2>Uninstall</h2>
-<p>
-Uninstalling the plugin can be done using the built in Rails plugin script.
-Issue the following command from the root of your application:
-</p>
-<pre>
-  script/plugin remove userstamp
-</pre>
-<h2>Documentation</h2>
-<p>
-RDoc has been run on the plugin directory and is available in the doc
-directory.
+<a href="http://github.com/delynn/userstamp_sample">Example userstamp
+application</a>
 </p>
 <h2>Running Unit Tests</h2>
-<p>
-There are extensive unit tests in the &quot;test&quot; directory of the
-plugin. These test can be run individually by executing the following
-command from the userstamp directory:
-</p>
 <pre>
- ruby test/compatibility_stamping_test.rb
- ruby test/stamping_test.rb
- ruby test/userstamp_controller_test.rb
+ All: rake
+ One: ruby test/compatibility_stamping_test.rb
 </pre>
-<h2>Bugs &amp; Feedback</h2>
+<h2>Author</h2>
 <p>
-Bug reports and feedback are welcome via my delynn+userstamp@gmail.com
-email address. I also encouraged everyone to clone the git repository and
-make modifications&#8212;I&#8216;ll be more than happy to merge any changes
-from other people&#8216;s branches that would be beneficial to the whole
-project.
+<a href="http://delynnberry.com/">DeLynn Berry</a>
 </p>
-<h2>Credits and Special Thanks</h2>
 <p>
 The original idea for this plugin came from the Rails Wiki article entitled
 <a
@@ -303,10 +258,14 @@ href="http://wiki.rubyonrails.com/rails/pages/ExtendingActiveRecordExample">Exte
 ActiveRecord</a>.
 </p>
 <h2>Contributors / maintenance / enhancement</h2>
-<pre>
- - {Michael Grosser}[http://pragmatig.com]
- - {John Dell}[http://blog.spovich.com/]
-</pre>
+<ul>
+<li><a href="http://pragmatig.com">Michael Grosser</a>
+
+</li>
+<li><a href="http://blog.spovich.com/">John Dell</a>
+
+</li>
+</ul>
 
     </div>
 

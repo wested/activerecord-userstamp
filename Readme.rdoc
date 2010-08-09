@@ -24,7 +24,7 @@ setting up your environment on a per request basis.
 
 === Example
 Assume a weblog application has User and Post objects.
-1. Create the migrations for these objects
+# 1: Create the migrations for these objects
 
   class CreateUsers < ActiveRecord::Migration
     def self.up
@@ -52,15 +52,13 @@ Assume a weblog application has User and Post objects.
     end
   end
 
-2. Users are going to manipulate Post's, use the
-<tt>model_stamper</tt>:
+# 2: Users are going to manipulate Post's, use the <tt>model_stamper</tt>:
 
   class User < ActiveRecord::Base
     model_stamper
   end
 
-3. Setup a controller to set the current user of the application. It's
-recommended that you do this in your ApplicationController:
+# 3: Set the current user in the ApplicationController:
 
   class ApplicationController < ActionController::Base
     include Userstamp
@@ -125,45 +123,23 @@ completely customized. Here's an quick example:
               :deleter_attribute  => :delete_user
   end
 
-If you are upgrading your application from the old version of Userstamp, there is a compatibility
-mode to have the plug-in use the old "_by" columns by default. To enable this mode, add the
-following line to the RAILS_ROOT/config/environment.rb file:
-
-  Ddb::Userstamp.compatibility_mode = true
+== Upgrade from 1.x
+ # config/environment.rb
+ Ddb::Userstamp.compatibility_mode = true
   
-If you are having a difficult time getting the Userstamp plug-in to work, I recommend you checkout
-the sample application that I created. You can find this application on GitHub[http://github.com/delynn/userstamp_sample]
-
-== Uninstall
-Uninstalling the plugin can be done using the built in Rails plugin script. Issue the following
-command from the root of your application:
-
-  script/plugin remove userstamp
-
-
-== Documentation
-RDoc has been run on the plugin directory and is available in the doc directory.
-
+{Example userstamp application}[http://github.com/delynn/userstamp_sample]
 
 == Running Unit Tests
-There are extensive unit tests in the "test" directory of the plugin. These test can be run
-individually by executing the following command from the userstamp directory:
 
- ruby test/compatibility_stamping_test.rb
- ruby test/stamping_test.rb
- ruby test/userstamp_controller_test.rb
+ All: rake
+ One: ruby test/compatibility_stamping_test.rb
 
+== Author
+{DeLynn Berry}[http://delynnberry.com/]
 
-== Bugs & Feedback
-Bug reports and feedback are welcome via my delynn+userstamp@gmail.com email address. I also
-encouraged everyone to clone the git repository and make modifications--I'll be more than happy
-to merge any changes from other people's branches that would be beneficial to the whole project.
-
-
-== Credits and Special Thanks
 The original idea for this plugin came from the Rails Wiki article entitled
 {Extending ActiveRecord}[http://wiki.rubyonrails.com/rails/pages/ExtendingActiveRecordExample].
 
 == Contributors / maintenance / enhancement
- - {Michael Grosser}[http://pragmatig.com]
- - {John Dell}[http://blog.spovich.com/]
+- {Michael Grosser}[http://pragmatig.com]
+- {John Dell}[http://blog.spovich.com/]
