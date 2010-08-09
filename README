@@ -1,8 +1,8 @@
-= Userstamp Plugin (v 2.0)
+Userstamp
 
 == Overview
 
-The Userstamp Plugin extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic updating of 'creator',
+Userstamp extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic updating of 'creator',
 'updater', and 'deleter' attributes. It is based loosely on the ActiveRecord::Timestamp[http://api.rubyonrails.com/classes/ActiveRecord/Timestamp.html] module.
 
 Two class methods (<tt>model_stamper</tt> and <tt>stampable</tt>) are implemented in this plugin.
@@ -15,60 +15,51 @@ created, updated, or deleted by 'stampers'.
  - As Rails plugin: `script/plugin install git://github.com/delynn/userstamp.git `
  - As gem: ` sudo gem install userstamp `
 
-Once installed you will need to restart your application for the plugin to be loaded into the Rails
-environment.
-
-You might also be interested in using Piston[http://piston.rubyforge.org/index.html] to manage the
-importing and future updating of this plugin.
-
 == Usage
-In this new version of the Userstamp plug-in, the assumption is that you have two different
-categories of objects; those that mani˝pulate, and those that are manipulated. For those objects
+The assumption is that you have two different
+categories of objects; those that manipulate, and those that are manipulated. For those objects
 that are being manipulated there's the Stampable module and for the manipulators there's the
 Stamper module. There's also the actual Userstamp module for your controllers that assists in
 setting up your environment on a per request basis.
 
-To better understand how all this works, I think an example is in order. For this example we will
-assume that a weblog application is comprised of User and Post objects. The first thing we need to
-do is create the migrations for these objects, and the plug-in gives you a <tt>userstamps</tt>
-method for very easily doing this:
+=== Example
+Assume a weblog application has User and Post objects.
+1. Create the migrations for these objects
 
   class CreateUsers < ActiveRecord::Migration
     def self.up
       create_table :users, :force => true do |t|
-        t.timestamps
+        ...
         t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
-        t.name
       end
     end
-    
+
     def self.down
       drop_table :users
     end
   end
-  
+
   class CreatePosts < ActiveRecord::Migration
     def self.up
       create_table :posts, :force => true do |t|
-        t.timestamps
+        ...
         t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
-        t.title
       end
     end
-    
+
     def self.down
       drop_table :posts
     end
   end
 
-Second, since Users are going to manipulate other objects in our project, we'll use the
-<tt>model_stamper</tt> method in our User class:
+2. Users are going to manipulate Post's, use the
+<tt>model_stamper</tt>:
 
   class User < ActiveRecord::Base
     model_stamper
   end
 
-Finally, we need to setup a controller to set the current user of the application. It's
+3. Setup a controller to set the current user of the application. It's
 recommended that you do this in your ApplicationController:
 
   class ApplicationController < ActionController::Base
@@ -105,9 +96,6 @@ User class. They are #stamper= and #stamper and look like this:
   def stamper
     Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"]
   end
-
-The big change with this new version is that we are now using Thread.current to save the current
-stamper so as to avoid conflict with concurrent requests.
 
 The <tt>stampable</tt> method allows you to customize what columns will get stamped, and also
 creates the +creator+, +updater+, and +deleter+ associations.
@@ -175,3 +163,7 @@ to merge any changes from other people's branches that would be beneficial to th
 == Credits and Special Thanks
 The original idea for this plugin came from the Rails Wiki article entitled
 {Extending ActiveRecord}[http://wiki.rubyonrails.com/rails/pages/ExtendingActiveRecordExample].
+
+== Contributors / maintenance / enhancement
+ - {Michael Grosser}[http://pragmatig.com]
+ - {John Dell}[http://blog.spovich.com/]
