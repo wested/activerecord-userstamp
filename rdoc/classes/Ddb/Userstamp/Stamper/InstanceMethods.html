@@ -151,7 +151,7 @@ for the current request.
 <pre>
     <span class="ruby-comment cmt"># File lib/stamper.rb, line 30</span>
 30:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">stamper</span>
-31:           <span class="ruby-identifier">find</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-node">&quot;#{self.to_s.downcase}_#{self.object_id}_stamper&quot;</span>])
+31:           <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>[<span class="ruby-node">&quot;#{self.to_s.downcase}_#{self.object_id}_stamper&quot;</span>]
 32:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>

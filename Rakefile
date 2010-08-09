@@ -17,7 +17,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Userstamp'
   rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README', 'CHANGELOG', 'LICENSE')
+  rdoc.rdoc_files.include('Readme.rdoc', 'CHANGELOG', 'LICENSE')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
