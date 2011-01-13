@@ -1,5 +1,25 @@
 Userstamp
 
+
+== Fork Details
+
+This is a fork of the grosser fork [https://github.com/grosser/userstamp] of the original userstamp plugin created by delynn [https://github.com/delynn/userstamp]. 
+
+This fork has been created to combine the grosser changes that enable use of the plugin within applications that perform soft deletes but are not using the acts_as_paranoid plugin/gem (for example this fork can now be used in conjunction with the rails3_acts_as_paranoid plugin/gem [https://github.com/goncalossilva/rails3_acts_as_paranoid]).
+
+This fork also includes a changes to perform the model stamping before validation is performed so that the model can enforce the presence of stamp attribute values eg.
+
+	validates :created_by, :presence => true
+	validates :updated_by, :presence => true
+	
+	
+== Using the Fork
+
+To use this fork add the following to your application gemfile:
+
+	gem 'userstamp', :git => "git://github.com/chrismhilton/userstamp.git"
+	
+
 == Overview
 
 Userstamp extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic updating of 'creator',
@@ -10,10 +30,6 @@ The <tt>model_stamper</tt> method is used in models that are responsible for cre
 deleting other objects. The <tt>stampable</tt> method is used in models that are subject to being
 created, updated, or deleted by 'stampers'.
 
-
-== Installation
- - As Rails plugin: `script/plugin install git://github.com/delynn/userstamp.git `
- - As gem: ` sudo gem install userstamp `
 
 == Usage
 The assumption is that you have two different
@@ -120,7 +136,8 @@ completely customized. Here's an quick example:
     stampable :stamper_class_name => :person,
               :creator_attribute  => :create_user,
               :updater_attribute  => :update_user,
-              :deleter_attribute  => :delete_user
+              :deleter_attribute  => :delete_user,
+			  :deleter => true
   end
 
 == Upgrade from 1.x
@@ -143,3 +160,4 @@ The original idea for this plugin came from the Rails Wiki article entitled
 == Contributors / maintenance / enhancement
 - {Michael Grosser}[http://pragmatig.com]
 - {John Dell}[http://blog.spovich.com/]
+- {Chris Hilton}
