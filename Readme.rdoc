@@ -1,5 +1,5 @@
 Userstamp
-
+=========
 
 == Fork Details
 
@@ -7,17 +7,17 @@ This is a fork of the grosser fork [https://github.com/grosser/userstamp] of the
 
 This fork has been created to combine the grosser changes that enable use of the plugin within applications that perform soft deletes but are not using the acts_as_paranoid plugin/gem (for example this fork can now be used in conjunction with the rails3_acts_as_paranoid plugin/gem [https://github.com/goncalossilva/rails3_acts_as_paranoid]).
 
-This fork also includes a changes to perform the model stamping before validation is performed so that the model can enforce the presence of stamp attribute values eg.
+This fork also includes changes to perform the model stamping before validation is performed so that the model can enforce the presence of stamp attribute values eg.
 
-	validates :created_by, :presence => true
-	validates :updated_by, :presence => true
+  validates :created_by, :presence => true
+  validates :updated_by, :presence => true
 	
 	
 == Using the Fork
 
 To use this fork add the following to your application gemfile:
 
-	gem 'userstamp', :git => "git://github.com/chrismhilton/userstamp.git"
+  gem 'userstamp', :git => "git://github.com/chrismhilton/userstamp.git"
 	
 
 == Overview
