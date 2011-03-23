@@ -84,7 +84,7 @@ module Ddb #:nodoc:
           self.deleter_attribute  = defaults[:deleter_attribute].to_sym
 
           class_eval do
-            klass = stamper_class_name.to_s.singularize.camelize
+            klass = "::#{stamper_class_name.to_s.singularize.camelize}"
             belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute
             belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute
 
