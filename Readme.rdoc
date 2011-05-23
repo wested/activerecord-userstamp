@@ -17,7 +17,7 @@ This fork also includes changes to perform the model stamping before validation 
 
 To use this fork add the following to your application gemfile:
 
-  gem 'userstamp', :git => "git://github.com/chrismhilton/userstamp.git"
+  gem 'userstamp', :git => "git://github.com/insphire/userstamp.git"
 	
 
 == Overview
