@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "lib/stampable.rb",
     "lib/stamper.rb",
     "lib/userstamp.rb",
+    "magiclabs-userstamp.gemspec",
     "rdoc/classes/Ddb/Controller.html",
     "rdoc/classes/Ddb/Controller/Userstamp.html",
     "rdoc/classes/Ddb/Controller/Userstamp/InstanceMethods.html",
@@ -65,8 +66,7 @@ Gem::Specification.new do |s|
     "test/schema.rb",
     "test/stamping_test.rb",
     "test/userstamp_controller_test.rb",
-    "test/userstamp_test.rb",
-    "userstamp.gemspec"
+    "test/userstamp_test.rb"
   ]
   s.homepage = "https://github.com/magiclabs/userstamp"
   s.require_paths = ["lib"]
