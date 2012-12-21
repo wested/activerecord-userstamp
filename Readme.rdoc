@@ -3,16 +3,16 @@
 
 == Fork Details
 
-This is a fork of the [grosser fork](https://github.com/grosser/userstamp) of the original [userstamp plugin](https://github.com/delynn/userstamp) created by delynn. 
+This is a fork of the {grosser fork}[https://github.com/grosser/userstamp] of the original {userstamp plugin}[https://github.com/delynn/userstamp] created by delynn. 
 
-This fork has been created to combine the grosser changes that enable use of the plugin within applications that perform soft deletes but are not using the original acts_as_paranoid plugin/gem so this fork can now be used in conjunction with the new [acts_as_paranoid gem](https://github.com/goncalossilva/rails3_acts_as_paranoid).
+This fork has been created to combine the grosser changes that enable use of the plugin within applications that perform soft deletes but are not using the original acts_as_paranoid plugin/gem so this fork can now be used in conjunction with the new {acts_as_paranoid gem}[https://github.com/goncalossilva/rails3_acts_as_paranoid].
 
 This fork also includes changes to perform the model stamping before validation is performed so that the model can enforce the presence of stamp attribute values eg.
 
   validates :created_by, :presence => true
   validates :updated_by, :presence => true
 
-This fork also includes changes to the stampable method for further compatibility with the new [acts_as_paranoid gem](https://github.com/goncalossilva/rails3_acts_as_paranoid) to accept a :with_deleted option so that the creator, updater and deleter associations will return objects that have been soft deleted eg.
+This fork also includes changes to the stampable method for further compatibility with the new {acts_as_paranoid gem}[https://github.com/goncalossilva/rails3_acts_as_paranoid] to accept a :with_deleted option so that the creator, updater and deleter associations will return objects that have been soft deleted eg.
 
   stampable :with_deleted => true
 
@@ -48,6 +48,7 @@ setting up your environment on a per request basis.
 
 === Example
 Assume a weblog application has User and Post objects.
+
 # 1: Create the migrations for these objects
 
   class CreateUsers < ActiveRecord::Migration
@@ -145,7 +146,7 @@ completely customized. Here's an quick example:
               :creator_attribute  => :create_user,
               :updater_attribute  => :update_user,
               :deleter_attribute  => :delete_user,
-			        :deleter => true,
+              :deleter => true,
               :with_deleted => true
   end
 
@@ -169,4 +170,4 @@ The original idea for this plugin came from the Rails Wiki article entitled
 == Contributors / maintenance / enhancement
 - {Michael Grosser}[http://pragmatig.com]
 - {John Dell}[http://blog.spovich.com/]
-- Chris Hilton
+- {Chris Hilton}[https://github.com/chrismhilton]
