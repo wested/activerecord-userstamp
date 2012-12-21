@@ -81,7 +81,7 @@ module Ddb #:nodoc:
             :creator_attribute  => (compatability ? :created_by : :creator_id),
             :updater_attribute  => (compatability ? :updated_by : :updater_id),
             :deleter_attribute  => (compatability ? :deleted_by : :deleter_id),
-            :deleter            => (options.has_key?(:deleter_attribute),
+            :deleter            => options.has_key?(:deleter_attribute),
             :with_deleted       => false
           }.merge(options)
 
