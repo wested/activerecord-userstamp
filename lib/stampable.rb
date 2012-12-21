@@ -60,14 +60,20 @@ module Ddb #:nodoc:
         #     stampable :stamper_class_name => :person,
         #               :creator_attribute  => :create_user,
         #               :updater_attribute  => :update_user,
-        #               :deleter_attribute  => :delete_user
-        #               :deleter            => true
+        #               :deleter_attribute  => :delete_user,
+        #               :deleter            => true,
+        #               :with_deleted       => true
         #   end
         #
-        # The method will automatically setup all the associations, and create <tt>before_save</tt>
-        # and <tt>before_create</tt> filters for doing the stamping.
-        # By default, the deleter association and before filter are not defined unless you are using
-        # acts_as_paranoid or you set the :deleter_attribute or set the :deleter option to true.
+        # The method will automatically setup all the associations,
+        # and create <tt>before_validation</tt> & <tt>before_destroy</tt> callbacks for doing the stamping.
+        #
+        # By default, the deleter association and before filter are not defined unless
+        # you set the :deleter_attribute or set the :deleter option to true.
+        #
+        # When using the new acts_as_paranoid gem (https://github.com/goncalossilva/rails3_acts_as_paranoid)
+        # the :with_deleted option can be used to setup the associations to return objects that have been soft deleted.
+        #
         def stampable(options = {})
           compatability = Ddb::Userstamp.compatibility_mode
           defaults  = {
@@ -75,7 +81,8 @@ module Ddb #:nodoc:
             :creator_attribute  => (compatability ? :created_by : :creator_id),
             :updater_attribute  => (compatability ? :updated_by : :updater_id),
             :deleter_attribute  => (compatability ? :deleted_by : :deleter_id),
-            :deleter            => !!(options.has_key?(:deleter_attribute) or defined?(Caboose::Acts::Paranoid))
+            :deleter            => (options.has_key?(:deleter_attribute),
+            :with_deleted       => false
           }.merge(options)
 
           self.stamper_class_name = defaults[:stamper_class_name].to_sym
@@ -85,15 +92,27 @@ module Ddb #:nodoc:
 
           class_eval do
             klass = "::#{stamper_class_name.to_s.singularize.camelize}"
-            belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute
-            belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute
+
+            if defaults[:with_deleted]
+              belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute, :with_deleted => true
+              belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute, :with_deleted => true
+            else
+              belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute
+              belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute
+            end
 
             before_validation :set_updater_attribute
             before_validation :set_creator_attribute, :on => :create
 
             if defaults[:deleter]
-              belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute
-              before_destroy  :set_deleter_attribute
+              if defaults[:with_deleted]
+                belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute, :with_deleted => true
+              else
+                belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute
+              end
+
+              before_destroy :set_deleter_attribute
+            
             end
           end
         end
