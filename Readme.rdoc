@@ -20,11 +20,6 @@ results in associations defined like so:
 
   belongs_to :creator, :class_name => "::User", :foreign_key => :created_by, :with_deleted => true  
 
-This fork also includes the addition of the automatic_mode option which controls whether whether classes that inherit from ActiveRecord are made stampable automatically. To turn automatic mode off, place the following line in your environment.rb
-
-  Ddb::Userstamp.automatic_mode = false
-
-This fork also includes a change so that the creator attribute is only set if its value is blank allowing for a manual override.
 	
 == Using the Fork
 
@@ -35,7 +30,7 @@ To use this fork add the following to your application gemfile:
 
 == Overview
 
-Userstamp extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic or selective updating of 'creator',
+Userstamp extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic updating of 'creator',
 'updater', and 'deleter' attributes. It is based loosely on the ActiveRecord::Timestamp[http://api.rubyonrails.com/classes/ActiveRecord/Timestamp.html] module.
 
 Two class methods (<tt>model_stamper</tt> and <tt>stampable</tt>) are implemented in this plugin.
