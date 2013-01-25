@@ -146,7 +146,9 @@ module Ddb #:nodoc:
           def set_creator_attribute
             return unless self.record_userstamp
             if respond_to?(self.creator_attribute.to_sym) && has_stamper?
-              self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+              if self.send(self.creator_attribute.to_sym).blank?
+                self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+              end
             end
           end
 
