@@ -14,6 +14,19 @@ module Ddb #:nodoc:
     mattr_accessor :compatibility_mode
     @@compatibility_mode = false
 
+    # Determines whether classes that inherit from ActiveRecord
+    # are made stampable automatically (default)
+    # or selectively in which case the method must be called within each
+    # model that needs to be stamped.
+    #
+    # To turn automatic mode off, place the following line in your environment.rb
+    # file:
+    #
+    #   Ddb::Userstamp.automatic_mode = false
+    #
+    mattr_accessor :automatic_mode
+    @@automatic_mode = true
+
     # Extends the stamping functionality of ActiveRecord by automatically recording the model
     # responsible for creating, updating, and deleting the current object. See the Stamper
     # and Userstamp modules for further documentation on how the entire process works.
@@ -47,13 +60,14 @@ module Ddb #:nodoc:
           # Defaults to :deleted_by when compatibility mode is on
           class_attribute  :deleter_attribute
 
-          self.stampable
+          self.stampable if Ddb::Userstamp.automatic_mode == true
         end
       end
 
       module ClassMethods
         # This method is automatically called on for all classes that inherit from
-        # ActiveRecord, but if you need to customize how the plug-in functions, this is the
+        # ActiveRecord when using the default automatic mode
+        # but if you need to customize how the plug-in functions, this is the
         # method to use. Here's an example:
         #
         #   class Post < ActiveRecord::Base
@@ -146,7 +160,9 @@ module Ddb #:nodoc:
           def set_creator_attribute
             return unless self.record_userstamp
             if respond_to?(self.creator_attribute.to_sym) && has_stamper?
-              self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+              if self.send(self.creator_attribute.to_sym).blank?
+                self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+              end
             end
           end
 
