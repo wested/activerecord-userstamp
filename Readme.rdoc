@@ -26,7 +26,7 @@ This fork also includes a change so that the creator attribute is only set if th
 
 To use this fork add the following to your application gemfile:
 
-  gem 'userstamp', :git => "git://github.com/insphire/userstamp.git"
+  gem 'magiclabs-userstamp', :git => "git://github.com/magiclabs/userstamp.git"
 
 
 == Overview
