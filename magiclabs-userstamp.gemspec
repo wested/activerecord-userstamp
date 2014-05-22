@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
     "lib/migration_helper.rb",
     "lib/stampable.rb",
     "lib/stamper.rb",
-    "lib/userstamp.rb",
+    "lib/magiclabs-userstamp.rb",
     "magiclabs-userstamp.gemspec",
     "rdoc/classes/Ddb/Controller.html",
     "rdoc/classes/Ddb/Controller/Userstamp.html",
