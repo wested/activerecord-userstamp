@@ -26,8 +26,8 @@ This fork also includes a change so that the creator attribute is only set if th
 
 To use this fork add the following to your application gemfile:
 
-  gem 'userstamp', :git => "git://github.com/insphire/userstamp.git"
-	
+  gem 'magiclabs-userstamp', :git => "git://github.com/magiclabs/userstamp.git"
+
 
 == Overview
 
@@ -90,16 +90,15 @@ Assume a weblog application has User and Post objects.
     include Userstamp
   end
 
-If all you are interested in is making sure all tables that have the proper columns are stamped
-by the currently logged in user you can stop right here. More than likely you want all your
-associations setup on your stamped objects, and that's where the <tt>stampable</tt> class method
-comes in. So in our example we'll want to use this method in both our User and Post classes:
+More than likely you want all your associations setup on your stamped objects,
+and that's where the <tt>stampable</tt> class method comes in.
+So in our example we'll want to use this method in both our User and Post classes:
 
   class User < ActiveRecord::Base
     model_stamper
     stampable
   end
-  
+
   class Post < ActiveRecord::Base
     stampable
   end
@@ -113,7 +112,7 @@ User class. They are #stamper= and #stamper and look like this:
     else
       object
     end
-    
+
     Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"] = object_stamper
   end
 
@@ -154,7 +153,7 @@ completely customized. Here's an quick example:
 == Upgrade from 1.x
  # config/environment.rb
  Ddb::Userstamp.compatibility_mode = true
-  
+
 {Example userstamp application}[http://github.com/delynn/userstamp_sample]
 
 == Running Unit Tests
@@ -171,4 +170,4 @@ The original idea for this plugin came from the Rails Wiki article entitled
 == Contributors / maintenance / enhancement
 - {Michael Grosser}[http://pragmatig.com]
 - {John Dell}[http://blog.spovich.com/]
-- {Chris Hilton}[https://github.com/chrismhilton]
+- Chris Hilton
