@@ -101,6 +101,8 @@ module Ddb #:nodoc:
 
             before_validation :set_updater_attribute
             before_validation :set_creator_attribute, :on => :create
+            before_save :set_updater_attribute
+            before_save :set_creator_attribute, :on => :create
 
             if defaults[:deleter]
               if defaults[:with_deleted]
