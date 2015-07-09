@@ -9,4 +9,6 @@ module ActiveRecord::Userstamp
     autoload :MigrationAdditions
     autoload :ModelAdditions
   end
+
+  eager_load!
 end

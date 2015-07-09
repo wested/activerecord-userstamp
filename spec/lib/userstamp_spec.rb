@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe ActiveRecord::Userstamp do
   it 'has a VERSION' do

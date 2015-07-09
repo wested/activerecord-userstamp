@@ -1,4 +1,4 @@
-require 'bundler'
+require 'bundler/setup'
 Bundler::GemHelper.install_tasks
 
 require 'rspec/core/rake_task'
@@ -6,6 +6,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 
+require 'rdoc/task'
 desc 'Generate documentation for the userstamp plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'

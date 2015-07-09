@@ -72,7 +72,7 @@ module ActiveRecord::Userstamp
       # the :with_deleted option can be used to setup the associations to return objects that have been soft deleted.
       #
       def stampable(options = {})
-        compatability = Ddb::Userstamp.compatibility_mode
+        compatability = ActiveRecord::Userstamp.compatibility_mode
         defaults  = {
           :stamper_class_name => :user,
           :creator_attribute  => (compatability ? :created_by : :creator_id),
@@ -172,5 +172,3 @@ module ActiveRecord::Userstamp
     end
   end
 end
-
-ActiveRecord::Base.send(:include, ActiveRecord::Userstamp::Stampable)

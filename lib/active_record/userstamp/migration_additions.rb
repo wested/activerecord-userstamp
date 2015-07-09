@@ -12,4 +12,5 @@ module ActiveRecord::Userstamp::MigrationHelper
   end
 end
 
-ActiveRecord::ConnectionAdapters::TableDefinition.send(:include, Ddb::Userstamp::MigrationHelper)
+ActiveRecord::ConnectionAdapters::TableDefinition.send(:include,
+  ActiveRecord::Userstamp::MigrationHelper)

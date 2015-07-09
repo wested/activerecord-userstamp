@@ -1,0 +1,41 @@
+require 'rails_helper'
+
+RSpec.describe PostsController, type: :controller do
+  controller do
+  end
+
+  before(:each) do
+    reset_to_defaults
+  end
+
+  context 'when updating a Post' do
+    it 'sets the correct updater' do
+      request.session  = {:person_id => @delynn.id}
+      post :update, :id => @first_post.id, :post => {:title => 'Different'}
+
+      expect(response.status).to eq(200)
+      expect(controller.instance_variable_get(:@post).title).to eq('Different')
+      expect(controller.instance_variable_get(:@post).updater).to eq(@delynn)
+    end
+  end
+
+  context 'when handling multiple requests' do
+    def simulate_second_request
+      post :update, id: @first_post.id, post: { title: 'Different Second'}
+      expect(controller.instance_variable_get(:@post).updater).to eq(@nicole)
+    end
+
+    it 'sets the correct updater' do
+      @request.session = {:person_id => @delynn.id}
+      get :edit, :id => @first_post.id
+      expect(response.status).to eq(200)
+
+      simulate_second_request
+
+      post :update, :id => @first_post.id, :post => {:title => 'Different'}
+      expect(response.status).to eq(200)
+      expect(controller.instance_variable_get(:@post).title).to eq('Different')
+      expect(controller.instance_variable_get(:@post).updater).to eq(@delynn)
+    end
+  end
+end

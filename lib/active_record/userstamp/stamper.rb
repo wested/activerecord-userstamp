@@ -7,8 +7,8 @@ module ActiveRecord::Userstamp
     module ClassMethods
       def model_stamper
         # don't allow multiple calls
-        return if self.included_modules.include?(Ddb::Userstamp::Stamper::InstanceMethods)
-        send(:extend, Ddb::Userstamp::Stamper::InstanceMethods)
+        return if self.included_modules.include?(ActiveRecord::Userstamp::Stamper::InstanceMethods)
+        send(:extend, ActiveRecord::Userstamp::Stamper::InstanceMethods)
       end
     end
 
@@ -37,5 +37,3 @@ module ActiveRecord::Userstamp
     end
   end
 end
-
-ActiveRecord::Base.send(:include, ActiveRecord::Userstamp::Stamper)

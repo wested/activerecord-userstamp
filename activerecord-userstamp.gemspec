@@ -22,8 +22,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 4.2'
   s.add_dependency 'activerecord', '~> 4.2'
 
-  s.add_development_dependency 'actionpack', '~> 4.2'
+  s.add_development_dependency 'actionview', '~> 4.2'
+  s.add_development_dependency 'tzinfo-data'
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
