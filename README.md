@@ -1,4 +1,4 @@
-# Userstamp [![Build Status](https://travis-ci.org/lowjoel/activerecord-userstamp.svg)](https://travis-ci.org/lowjoel/activerecord-userstamp) [![Build Status](https://travis-ci.org/lowjoel/activerecord-userstamp.svg)](https://travis-ci.org/lowjoel/activerecord-userstamp) [![Code Climate](https://codeclimate.com/github/lowjoel/activerecord-userstamp/badges/gpa.svg)](https://codeclimate.com/github/lowjoel/activerecord-userstamp)
+# Userstamp [![Build Status](https://travis-ci.org/lowjoel/activerecord-userstamp.svg)](https://travis-ci.org/lowjoel/activerecord-userstamp) [![Coverage Status](https://coveralls.io/repos/lowjoel/activerecord-userstamp/badge.svg?branch=master&service=github)](https://coveralls.io/github/lowjoel/activerecord-userstamp?branch=master) [![Code Climate](https://codeclimate.com/github/lowjoel/activerecord-userstamp/badges/gpa.svg)](https://codeclimate.com/github/lowjoel/activerecord-userstamp)
 ## Forkception
 
 This is a fork of:
@@ -70,14 +70,13 @@ To use this fork add the following to your application's Gemfile:
 
 ## Overview
 
-Userstamp extends ActiveRecord::Base[http://api.rubyonrails.com/classes/ActiveRecord/Base.html] to add automatic updating of 'creator',
-'updater', and 'deleter' attributes. It is based loosely on the ActiveRecord::Timestamp[http://api.rubyonrails.com/classes/ActiveRecord/Timestamp.html] module.
+Userstamp extends `ActiveRecord::Base` to add automatic updating of `creator`, `updater`, and 
+`deleter` attributes. It is based loosely on `ActiveRecord::Timestamp`.
 
-Two class methods (<tt>model_stamper</tt> and <tt>stampable</tt>) are implemented in this plugin.
-The <tt>model_stamper</tt> method is used in models that are responsible for creating, updating, or
-deleting other objects. The <tt>stampable</tt> method is used in models that are subject to being
-created, updated, or deleted by 'stampers'.
-
+Two class methods (`model_stamper` and `stampable`) are implemented in this gem. The `model_stamper`
+method is used in models that are responsible for creating, updating, or deleting other objects.
+Typically this would be the `User` model of your application. The `stampable` method is used in 
+models that are subject to being created, updated, or deleted by stampers.
 
 ## Usage
 The assumption is that you have two different
