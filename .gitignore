@@ -1,3 +1,4 @@
 *.log
 *.sqlite3
 /.rdoc
+/spec/examples.txt

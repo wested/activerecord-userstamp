@@ -1,16 +1,10 @@
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'bundler'
+Bundler::GemHelper.install_tasks
 
-desc 'Default: run unit tests.'
-task :default => :test
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
 
-desc 'Test the userstamp plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
+task :default => :spec
 
 desc 'Generate documentation for the userstamp plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
