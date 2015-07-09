@@ -1,3 +1,5 @@
+ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+
 ActiveRecord::Schema.define(:version => 0) do
   # Users are created and updated by other Users
   create_table :users, :force => true do |t|
@@ -50,5 +52,4 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :deleted_by,     :integer
     t.column :deleted_at,     :datetime
   end
-
 end

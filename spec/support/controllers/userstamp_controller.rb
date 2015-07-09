@@ -1,4 +1,4 @@
-class UserstampController < ActionController::Base
+ class UserstampController < ActionController::Base
   include Ddb::Controller::Userstamp
 
   protected

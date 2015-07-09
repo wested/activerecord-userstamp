@@ -1,3 +1,5 @@
+require_relative './userstamp_controller'
+
 class UsersController < UserstampController
   def edit
     @user = User.find(params[:id])
