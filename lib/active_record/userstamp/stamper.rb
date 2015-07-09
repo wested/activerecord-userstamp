@@ -24,17 +24,23 @@ module ActiveRecord::Userstamp
           object
         end
 
-        Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"] = object_stamper
+        Thread.current[stamper_identifier] = object_stamper
       end
 
       # Retrieves the existing stamper for the current request.
       def stamper
-        Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"]
+        Thread.current[stamper_identifier]
       end
 
       # Sets the stamper back to +nil+ to prepare for the next request.
       def reset_stamper
-        Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"] = nil
+        Thread.current[stamper_identifier] = nil
+      end
+
+      private
+
+      def stamper_identifier
+        "#{self.to_s.downcase}_#{self.object_id}_stamper"
       end
     end
   end
