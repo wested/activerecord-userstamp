@@ -1,4 +1,15 @@
 # Userstamp [![Build Status](https://travis-ci.org/lowjoel/activerecord-userstamp.svg)](https://travis-ci.org/lowjoel/activerecord-userstamp) [![Coverage Status](https://coveralls.io/repos/lowjoel/activerecord-userstamp/badge.svg?branch=master&service=github)](https://coveralls.io/github/lowjoel/activerecord-userstamp?branch=master) [![Code Climate](https://codeclimate.com/github/lowjoel/activerecord-userstamp/badges/gpa.svg)](https://codeclimate.com/github/lowjoel/activerecord-userstamp)
+
+## Overview
+
+Userstamp extends `ActiveRecord::Base` to add automatic updating of `creator`, `updater`, and 
+`deleter` attributes. It is based loosely on `ActiveRecord::Timestamp`.
+
+Two class methods (`model_stamper` and `stampable`) are implemented in this gem. The `model_stamper`
+method is used in models that are responsible for creating, updating, or deleting other objects.
+Typically this would be the `User` model of your application. The `stampable` method is used in 
+models that are subject to being created, updated, or deleted by stampers.
+
 ## Forkception
 
 This is a fork of:
@@ -59,37 +70,18 @@ enforce the presence of stamp attributes:
 
 Furthermore, the `creator` attribute is set only if the value is blank allowing for a manual
 override.
-	
-## Using the Fork
 
-To use this fork add the following to your application's Gemfile:
+## Usage
+Assume that we are building a blog application, with User and Post objects. Add the following 
+to the application's Gemfile:
 
 ```ruby
   gem 'activerecord-userstamp'
 ```
 
-## Overview
+Ensure that each model has a set of columns for creators, updaters, and deleters (if applicable.)
 
-Userstamp extends `ActiveRecord::Base` to add automatic updating of `creator`, `updater`, and 
-`deleter` attributes. It is based loosely on `ActiveRecord::Timestamp`.
-
-Two class methods (`model_stamper` and `stampable`) are implemented in this gem. The `model_stamper`
-method is used in models that are responsible for creating, updating, or deleting other objects.
-Typically this would be the `User` model of your application. The `stampable` method is used in 
-models that are subject to being created, updated, or deleted by stampers.
-
-## Usage
-The assumption is that you have two different
-categories of objects; those that manipulate, and those that are manipulated. For those objects
-that are being manipulated there's the Stampable module and for the manipulators there's the
-Stamper module. There's also the actual Userstamp module for your controllers that assists in
-setting up your environment on a per request basis.
-
-## Example
-Assume a weblog application has User and Post objects.
-
-# 1: Create the migrations for these objects
-
+```ruby
   class CreateUsers < ActiveRecord::Migration
     def self.up
       create_table :users, :force => true do |t|
@@ -115,23 +107,32 @@ Assume a weblog application has User and Post objects.
       drop_table :posts
     end
   end
+```
 
-# 2: Users are going to manipulate Post's, use the <tt>model_stamper</tt>:
+Declare the stamper on the User model:
 
+```ruby
   class User < ActiveRecord::Base
     model_stamper
   end
+```
 
-# 3: Set the current user in the ApplicationController:
+And declare that the Posts are stampable:
 
-  class ApplicationController < ActionController::Base
-    include Userstamp
+```ruby
+  class Post < ActiveRecord::Base
+    stampable
   end
+```
 
-More than likely you want all your associations setup on your stamped objects,
-and that's where the <tt>stampable</tt> class method comes in.
-So in our example we'll want to use this method in both our User and Post classes:
+If your stamper is called `User`, that's it; you're done.
 
+## Customisation
+More than likely you want all your associations setup on your stamped objects, and that's where the
+`stampable` class method comes in. So in our example we'll want to use this method in both our 
+User and Post classes:
+
+```ruby
   class User < ActiveRecord::Base
     model_stamper
     stampable
@@ -140,9 +141,10 @@ So in our example we'll want to use this method in both our User and Post classe
   class Post < ActiveRecord::Base
     stampable
   end
+```
 
-Okay, so what all have we done? The <tt>model_stamper</tt> class method injects two methods into the
-User class. They are #stamper= and #stamper and look like this:
+Okay, so what all have we done? The `model_stamper` class method injects two methods into the
+`User` class. They are `#stamper=` and `#stamper` and look like this:
 
   def stamper=(object)
     object_stamper = if object.is_a?(ActiveRecord::Base)
@@ -158,8 +160,8 @@ User class. They are #stamper= and #stamper and look like this:
     Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"]
   end
 
-The <tt>stampable</tt> method allows you to customize what columns will get stamped, and also
-creates the +creator+, +updater+, and +deleter+ associations.
+The `stampable` method allows you to customize what columns will get stamped, and also creates the
+`creator`, `updater`, and `deleter` associations.
 
 The Userstamp module that we included into our ApplicationController uses the setter method to
 set which user is currently making the request. By default the 'set_stampers' method works perfectly
@@ -188,21 +190,28 @@ completely customized. Here's an quick example:
               :with_deleted => true
   end
 
-== Upgrade from 1.x
- # config/environment.rb
- Ddb::Userstamp.compatibility_mode = true
+## Upgrading
+### Upgrading from delynn's 1.x/2.x with `compatibility_mode`
+The major difference between 1.x and 2.x is the naming of the columns. This version of the gem 
+allows specifying the name of the column from the gem configuration.
 
-{Example userstamp application}[http://github.com/delynn/userstamp_sample]
+Furthermore, there is no need to include the `Userstamp` module in `ApplicationController`.
 
-== Running Unit Tests
+However, this is where the bulk of the work is: since this is a fork of insphire's gem, where he 
+has removed making every `ActiveRecord::Base` subclass automatically a 
 
- All: rake
- One: ruby test/compatibility_stamping_test.rb
+### Upgrading from magiclabs-userstamp
+
+There is no need to include the `Userstamp` module in `ApplicationController`.
+
+## Tests
+Run
+
+    $ bundle exec rspec
 
 ## Authors
- - [DeLynn Berry](http://delynnberry.com/)
-   
-   The original idea for this plugin came from the Rails Wiki article entitled
+ - [DeLynn Berry](http://delynnberry.com/): The original idea for this plugin came from the Rails
+   Wiki article entitled
    [Extending ActiveRecord](http://wiki.rubyonrails.com/rails/pages/ExtendingActiveRecordExample)
  - [Michael Grosser](http://pragmatig.com)
  - [John Dell](http://blog.spovich.com/)
