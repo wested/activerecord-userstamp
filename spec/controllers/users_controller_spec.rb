@@ -10,7 +10,9 @@ RSpec.describe UsersController, type: :controller do
 
   context 'when updating a User' do
     it 'sets the correct updater' do
+      request.session = { user_id: @hera.id }
       patch :update, id: @hera.id, user: { name: 'Different'}
+
       expect(response.status).to eq(200)
       expect(controller.instance_variable_get(:@user).name).to eq('Different')
       expect(controller.instance_variable_get(:@user).updater).to eq(@hera)
@@ -19,13 +21,18 @@ RSpec.describe UsersController, type: :controller do
 
   context 'when handling multiple requests' do
     def simulate_second_request
-      patch :update, id: @hera.id, user: { name: 'Different Second' }
+      old_request_session = request.session
+      request.session = { user_id: @zeus.id }
+
+      post :update, id: @hera.id, user: { name: 'Different Second' }
       expect(controller.instance_variable_get(:@user).updater).to eq(@zeus)
+    ensure
+      request.session = old_request_session
     end
 
     it 'sets the correct updater' do
-      controller.session[:user_id] = @hera.id
-      get :edit, :id => @hera.id
+      request.session = { user_id: @hera.id }
+      get :edit, id: @hera.id
       expect(response.status).to eq(200)
 
       simulate_second_request

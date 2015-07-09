@@ -22,8 +22,8 @@ RSpec.describe 'Stamping', type: :model do
 
     context 'when the stamper is an ID' do
       it 'sets the correct creator and updater' do
-        User.stamper = @nicole.id
-        expect(User.stamper).to eq(@nicole.id)
+        User.stamper = @hera.id
+        expect(User.stamper).to eq(@hera.id)
 
         person = Person.create(:name => "Daniel")
         expect(person.creator_id).to eq(@hera.id)
@@ -145,10 +145,9 @@ RSpec.describe 'Stamping', type: :model do
 
   context 'when no deleter column is present' do
     it 'does not create a deleter relation' do
-      @comment = Comment.create
-      expect(@comment.respond_to?('creator')).to eq(true)
-      expect(@comment.respond_to?('updater')).to eq(true)
-      expect(@comment.respond_to?('deleter')).to eq(false)
+      expect(@delynn.respond_to?('creator')).to eq(true)
+      expect(@delynn.respond_to?('updater')).to eq(true)
+      expect(@delynn.respond_to?('deleter')).to eq(false)
     end
   end
 

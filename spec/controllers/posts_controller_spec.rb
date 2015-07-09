@@ -10,8 +10,8 @@ RSpec.describe PostsController, type: :controller do
 
   context 'when updating a Post' do
     it 'sets the correct updater' do
-      request.session  = {:person_id => @delynn.id}
-      post :update, :id => @first_post.id, :post => {:title => 'Different'}
+      request.session  = { person_id: @delynn.id }
+      post :update, id: @first_post.id, post: { title: 'Different' }
 
       expect(response.status).to eq(200)
       expect(controller.instance_variable_get(:@post).title).to eq('Different')
@@ -21,18 +21,23 @@ RSpec.describe PostsController, type: :controller do
 
   context 'when handling multiple requests' do
     def simulate_second_request
+      old_request_session = request.session
+      request.session = { person_id: @nicole.id }
+
       post :update, id: @first_post.id, post: { title: 'Different Second'}
       expect(controller.instance_variable_get(:@post).updater).to eq(@nicole)
+    ensure
+      request.session = old_request_session
     end
 
     it 'sets the correct updater' do
-      @request.session = {:person_id => @delynn.id}
-      get :edit, :id => @first_post.id
+      request.session = { person_id: @delynn.id }
+      get :edit, id: @first_post.id
       expect(response.status).to eq(200)
 
       simulate_second_request
 
-      post :update, :id => @first_post.id, :post => {:title => 'Different'}
+      post :update, id: @first_post.id, post: { title: 'Different' }
       expect(response.status).to eq(200)
       expect(controller.instance_variable_get(:@post).title).to eq('Different')
       expect(controller.instance_variable_get(:@post).updater).to eq(@delynn)
