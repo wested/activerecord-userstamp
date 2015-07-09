@@ -170,4 +170,5 @@ The original idea for this plugin came from the Rails Wiki article entitled
 == Contributors / maintenance / enhancement
 - {Michael Grosser}[http://pragmatig.com]
 - {John Dell}[http://blog.spovich.com/]
-- Chris Hilton
+- {Chris Hilton}[https://github.com/chrismhilton]
+- {Thomas von Deyen}[https://github.com/tvdeyen]
