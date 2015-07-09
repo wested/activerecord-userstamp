@@ -1,7 +1,9 @@
 module ActiveRecord::Userstamp
   module Stamper
-    def self.included(base) # :nodoc:
-      base.extend(ClassMethods)
+    extend ActiveSupport::Concern
+
+    included do
+      extend ClassMethods
     end
 
     module ClassMethods

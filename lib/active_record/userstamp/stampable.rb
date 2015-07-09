@@ -17,9 +17,10 @@ module ActiveRecord::Userstamp
   # responsible for creating, updating, and deleting the current object. See the Stamper
   # and Userstamp modules for further documentation on how the entire process works.
   module Stampable
-    def self.included(base) #:nodoc:
-      super
+    extend ActiveSupport::Concern
 
+    included do
+      base = self
       base.extend(ClassMethods)
       base.class_eval do
         include InstanceMethods
