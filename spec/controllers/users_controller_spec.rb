@@ -15,7 +15,7 @@ RSpec.describe UsersController, type: :controller do
 
       expect(response.status).to eq(200)
       expect(controller.instance_variable_get(:@user).name).to eq('Different')
-      expect(controller.instance_variable_get(:@user).updater_id).to eq(@hera.id)
+      expect(controller.instance_variable_get(:@user).updater).to eq(@hera)
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe UsersController, type: :controller do
       request.session = { user_id: @zeus.id }
 
       post :update, id: @hera.id, user: { name: 'Different Second' }
-      expect(controller.instance_variable_get(:@user).updater_id).to eq(@zeus.id)
+      expect(controller.instance_variable_get(:@user).updater).to eq(@zeus)
     ensure
       request.session = old_request_session
     end

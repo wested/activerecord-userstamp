@@ -20,6 +20,9 @@
                         `ActiveRecord::Base`. So now, all models will automatically be stamped
                         when the creator/updater/deleter attributes are present. This mirrors
                         `ActiveRecord::Timestamp` behaviour.
+  * Joel Low          - Automatically declare the creator/updater/deleter associations on every
+                        model. To add additional configuration options, simply call `stampable`.
+                        This can be called multiple times per model; the last call takes effect.
 
  ## 2.1.1 (9/4/2015)
 

@@ -19,6 +19,14 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   module ClassMethods
+    def inherited(klass)
+      super
+
+      klass.class_eval do
+        add_userstamp_associations({})
+      end
+    end
+
     # This method customizes how the gem functions. For example:
     #
     #   class Post < ActiveRecord::Base
@@ -34,19 +42,7 @@ module ActiveRecord::Userstamp::Stampable
     def stampable(options = {})
       self.stamper_class_name = options.delete(:stamper_class_name) if options.key?(:stamper_class_name)
 
-      class_eval do
-        config = ActiveRecord::Userstamp.config
-
-        klass = stamper_class.try(:name)
-        relation_options = options.reverse_merge(class_name: klass)
-        belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
-        belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)
-
-
-        if config.deleter_attribute
-          belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute)
-        end
-      end
+      add_userstamp_associations(options)
     end
 
     # Temporarily allows you to turn stamping off. For example:
@@ -66,6 +62,43 @@ module ActiveRecord::Userstamp::Stampable
 
     def stamper_class #:nodoc:
       stamper_class_name.to_s.camelize.constantize rescue nil
+    end
+
+    private
+
+    # Defines the associations for Userstamp.
+    def add_userstamp_associations(options)
+      config = ActiveRecord::Userstamp.config
+      klass = stamper_class.try(:name)
+      relation_options = options.reverse_merge(class_name: klass)
+
+      generated_association_methods.module_eval do
+        remove_method(:creator) if method_defined?(:creator)
+        remove_method(:creator=) if method_defined?(:creator=)
+        remove_method(:build_creator) if method_defined?(:build_creator)
+        remove_method(:create_creator) if method_defined?(:create_creator)
+        remove_method(:create_creator!) if method_defined?(:create_creator!)
+
+        remove_method(:updater) if method_defined?(:updater)
+        remove_method(:updater=) if method_defined?(:updater=)
+        remove_method(:build_updater) if method_defined?(:build_updater)
+        remove_method(:create_updater) if method_defined?(:create_updater)
+        remove_method(:create_updater!) if method_defined?(:create_updater!)
+
+        remove_method(:deleter) if method_defined?(:deleter)
+        remove_method(:deleter=) if method_defined?(:deleter=)
+        remove_method(:build_deleter) if method_defined?(:build_deleter)
+        remove_method(:create_deleter) if method_defined?(:create_deleter)
+        remove_method(:create_deleter!) if method_defined?(:create_deleter!)
+      end
+
+      belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
+      belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)
+
+      if config.deleter_attribute
+        remove_method(:deleter) if method_defined?(:deleter)
+        belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute)
+      end
     end
   end
 
