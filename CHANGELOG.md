@@ -23,6 +23,7 @@
   * Joel Low          - Automatically declare the creator/updater/deleter associations on every
                         model. To add additional configuration options, simply call `stampable`.
                         This can be called multiple times per model; the last call takes effect.
+  * Joel Low          - Remove support for `serialized_attributes`. It will be removed in Rails 5.
 
  ## 2.1.1 (9/4/2015)
 

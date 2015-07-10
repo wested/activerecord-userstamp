@@ -18,6 +18,31 @@ RSpec.describe 'Stamping', type: :model do
         expect(person.creator).to eq(@zeus)
         expect(person.updater).to eq(@zeus)
       end
+
+      context 'when a creator is specified' do
+        it 'does not reset the creator' do
+          expect(User.stamper).to eq(@zeus.id)
+
+          person = Person.create(:name => "David", creator: @hera)
+          expect(person.creator_id).to eq(@hera.id)
+          expect(person.updater_id).to eq(@zeus.id)
+          expect(person.creator).to eq(@hera)
+          expect(person.updater).to eq(@zeus)
+        end
+      end
+
+      context 'when saving without validations' do
+        it 'sets the correct creator and updater' do
+          expect(User.stamper).to eq(@zeus.id)
+
+          person = Person.new(:name => "David")
+          person.save(validate: false)
+          expect(person.creator_id).to eq(@zeus.id)
+          expect(person.updater_id).to eq(@zeus.id)
+          expect(person.creator).to eq(@zeus)
+          expect(person.updater).to eq(@zeus)
+        end
+      end
     end
 
     context 'when the stamper is an ID' do
