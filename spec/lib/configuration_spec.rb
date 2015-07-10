@@ -10,4 +10,11 @@ RSpec.describe 'Configuration' do
       expect(block).to be(ActiveRecord::Userstamp::Configuration)
     end
   end
+
+  describe '.config' do
+    it 'matches default_stamper and default_stamper_class' do
+      config = ActiveRecord::Userstamp.config
+      expect(config.default_stamper_class.name).to eq(config.default_stamper)
+    end
+  end
 end
