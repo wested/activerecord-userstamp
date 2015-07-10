@@ -42,15 +42,15 @@ module ActiveRecord::Userstamp::Stampable
         belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
         belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)
 
-        before_validation :set_updater_attribute
-        before_validation :set_creator_attribute, on: :create
-        before_save :set_updater_attribute
-        before_save :set_creator_attribute, on: :create
+        before_validation :set_updater_attribute, if: :record_userstamp
+        before_validation :set_creator_attribute, on: :create, if: :record_userstamp
+        before_save :set_updater_attribute, if: :record_userstamp
+        before_save :set_creator_attribute, on: :create, if: :record_userstamp
 
         if config.deleter_attribute
           belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute)
 
-          before_destroy :set_deleter_attribute
+          before_destroy :set_deleter_attribute, if: :record_userstamp
         end
       end
     end
@@ -78,11 +78,10 @@ module ActiveRecord::Userstamp::Stampable
   private
 
   def has_stamper?
-    !self.class.stamper_class.nil? && !self.class.stamper_class.stamper.nil? rescue false
+    !self.class.stamper_class.nil? && !self.class.stamper_class.stamper.nil?
   end
 
   def set_creator_attribute
-    return unless self.record_userstamp
     if respond_to?(ActiveRecord::Userstamp.config.creator_attribute) && has_stamper?
       if self.send(ActiveRecord::Userstamp.config.creator_attribute).blank?
         self.send("#{ActiveRecord::Userstamp.config.creator_attribute}=", self.class.stamper_class.stamper)
@@ -91,7 +90,6 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   def set_updater_attribute
-    return unless self.record_userstamp
     # only set updater if the record is new or has changed
     # or contains a serialized attribute (in which case the attribute value is always updated)
     return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
@@ -101,7 +99,6 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   def set_deleter_attribute
-    return unless self.record_userstamp
     if respond_to?(ActiveRecord::Userstamp.config.deleter_attribute) && has_stamper?
       self.send("#{ActiveRecord::Userstamp.config.deleter_attribute}=", self.class.stamper_class.stamper)
       save
