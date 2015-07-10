@@ -7,6 +7,7 @@ RSpec.describe 'Migration helpers', type: :model do
   subject { self.class::Random.new }
 
   temporary_table(:randoms) do |t|
+    ActiveRecord::Userstamp.config.compatibility_mode = false
     t.userstamps
   end
 
