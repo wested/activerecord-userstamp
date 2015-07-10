@@ -1,6 +1,6 @@
  # Changelog
 
- ## 3.0.0
+ ## 3.0.0 (10-7-2015)
   * Joel Low          - Remove `compatibility_mode`. Use the `creator_attribute`,
                         `updater_attribute`, and `deleter_attribute` configuration options instead.
   * Joel Low          - The table definition migration helper should follow the gem configuration
@@ -25,7 +25,7 @@
                         This can be called multiple times per model; the last call takes effect.
   * Joel Low          - Remove support for `serialized_attributes`. It will be removed in Rails 5.
 
- ## 2.1.1 (9/4/2015)
+ ## 2.1.1 (9-7-2015)
 
   * Chris Hilton      - Only set updater attribute if the record has changed or contains a
                         serialized attribute.
