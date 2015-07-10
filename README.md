@@ -186,7 +186,6 @@ completely customized. Here's an quick example:
               :creator_attribute  => :create_user,
               :updater_attribute  => :update_user,
               :deleter_attribute  => :delete_user,
-              :deleter => true,
               :with_deleted => true
   end
 

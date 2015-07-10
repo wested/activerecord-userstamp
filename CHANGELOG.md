@@ -8,6 +8,7 @@
   * Joel Low          - When deciding whether to generate a `deleter_id` column, check the gem
                         configuration for the `deleter_attribute` configuration option instead of
                         relying on the user to specify in every migration.
+  * Joel Low          - Remove the `deleter` option from the `stampable` model declaration.
 
  ## 2.1.1 (9/4/2015)
 

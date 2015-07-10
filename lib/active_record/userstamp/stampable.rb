@@ -45,7 +45,6 @@ module ActiveRecord::Userstamp
       #               :creator_attribute  => :create_user,
       #               :updater_attribute  => :update_user,
       #               :deleter_attribute  => :delete_user,
-      #               :deleter            => true,
       #               :with_deleted       => true
       #   end
       #
@@ -64,7 +63,6 @@ module ActiveRecord::Userstamp
           creator_attribute:  ActiveRecord::Userstamp.config.creator_attribute,
           updater_attribute:  ActiveRecord::Userstamp.config.updater_attribute,
           deleter_attribute:  ActiveRecord::Userstamp.config.deleter_attribute,
-          deleter:            options.has_key?(:deleter_attribute),
           with_deleted:       false
         )
 
@@ -89,7 +87,7 @@ module ActiveRecord::Userstamp
           before_save :set_updater_attribute
           before_save :set_creator_attribute, :on => :create
 
-          if defaults[:deleter]
+          if deleter_attribute
             if defaults[:with_deleted]
               belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute, :with_deleted => true
             else

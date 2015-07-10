@@ -5,7 +5,7 @@ RSpec.describe 'Migration helpers', type: :model do
     ActiveRecord::Userstamp.configure do |config|
       config.creator_attribute = :creator_id
       config.updater_attribute = :updater_id
-      config.deleter_attribute = :deleter_id
+      config.deleter_attribute = nil
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe 'Migration helpers', type: :model do
       end
 
       it 'has a deleter_id association' do
-        expect(subject.has_attribute?(:deleter_id)).to be true
+        expect(subject.has_attribute?(:deleter_id)).to be false
       end
     end
   end

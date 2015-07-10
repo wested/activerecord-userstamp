@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  stampable :stamper_class_name => :person, :deleter => true
+  stampable :stamper_class_name => :person, deleter_attribute: :deleter_id
   has_many :comments
   
   # override destroy to get soft delete like acts_as_paranoid style delete
