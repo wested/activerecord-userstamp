@@ -72,25 +72,9 @@ module ActiveRecord::Userstamp::Stampable
       klass = stamper_class.try(:name)
       relation_options = options.reverse_merge(class_name: klass)
 
-      generated_association_methods.module_eval do
-        remove_method(:creator) if method_defined?(:creator)
-        remove_method(:creator=) if method_defined?(:creator=)
-        remove_method(:build_creator) if method_defined?(:build_creator)
-        remove_method(:create_creator) if method_defined?(:create_creator)
-        remove_method(:create_creator!) if method_defined?(:create_creator!)
-
-        remove_method(:updater) if method_defined?(:updater)
-        remove_method(:updater=) if method_defined?(:updater=)
-        remove_method(:build_updater) if method_defined?(:build_updater)
-        remove_method(:create_updater) if method_defined?(:create_updater)
-        remove_method(:create_updater!) if method_defined?(:create_updater!)
-
-        remove_method(:deleter) if method_defined?(:deleter)
-        remove_method(:deleter=) if method_defined?(:deleter=)
-        remove_method(:build_deleter) if method_defined?(:build_deleter)
-        remove_method(:create_deleter) if method_defined?(:create_deleter)
-        remove_method(:create_deleter!) if method_defined?(:create_deleter!)
-      end
+      ActiveRecord::Userstamp::Utilities.remove_association(self, :creator)
+      ActiveRecord::Userstamp::Utilities.remove_association(self, :updater)
+      ActiveRecord::Userstamp::Utilities.remove_association(self, :deleter)
 
       belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
       belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)

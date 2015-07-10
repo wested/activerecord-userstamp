@@ -4,6 +4,7 @@ module ActiveRecord::Userstamp
   autoload :Configuration
   autoload :Stampable
   autoload :Stamper
+  autoload :Utilities
 
   eager_autoload do
     autoload :ControllerAdditions
