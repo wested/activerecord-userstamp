@@ -29,7 +29,7 @@ RSpec.describe 'Migration helpers', type: :model do
       end
 
       it 'has a deleter_id association' do
-        expect(subject.has_attribute?(:deleter_id)).to be false
+        expect(subject.has_attribute?(:deleter_id)).to be true
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe 'Migration helpers', type: :model do
       end
 
       it 'has a deleted_by attribute' do
-        expect(subject.has_attribute?(:deleted_by)).to be false
+        expect(subject.has_attribute?(:deleted_by)).to be true
       end
     end
   end

@@ -5,6 +5,9 @@
                         `updater_attribute`, and `deleter_attribute` configuration options instead.
   * Joel Low          - The table definition migration helper should follow the gem configuration
                         when generating column names.
+  * Joel Low          - When deciding whether to generate a `deleter_id` column, check the gem
+                        configuration for the `deleter_attribute` configuration option instead of
+                        relying on the user to specify in every migration.
 
  ## 2.1.1 (9/4/2015)
 

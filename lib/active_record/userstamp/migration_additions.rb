@@ -1,10 +1,11 @@
 module ActiveRecord::Userstamp::MigrationHelper
   extend ActiveSupport::Concern
 
-  def userstamps(include_deleted_by = false, *args)
-    column(ActiveRecord::Userstamp.config.creator_attribute, :integer, *args)
-    column(ActiveRecord::Userstamp.config.updater_attribute, :integer, *args)
-    column(ActiveRecord::Userstamp.config.deleter_attribute, :integer, *args) if include_deleted_by
+  def userstamps(*args)
+    config = ActiveRecord::Userstamp.config
+    column(config.creator_attribute, :integer, *args)
+    column(config.updater_attribute, :integer, *args)
+    column(config.deleter_attribute, :integer, *args) if config.deleter_attribute.present?
   end
 end
 

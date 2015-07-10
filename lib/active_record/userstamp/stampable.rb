@@ -71,7 +71,7 @@ module ActiveRecord::Userstamp
         self.stamper_class_name = defaults[:stamper_class_name].to_sym
         self.creator_attribute  = defaults[:creator_attribute].to_sym
         self.updater_attribute  = defaults[:updater_attribute].to_sym
-        self.deleter_attribute  = defaults[:deleter_attribute].to_sym
+        self.deleter_attribute  = defaults[:deleter_attribute].to_sym if defaults[:deleter_attribute]
 
         class_eval do
           klass = "::#{stamper_class_name.to_s.singularize.camelize}"

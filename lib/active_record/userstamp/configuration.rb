@@ -41,7 +41,6 @@ module ActiveRecord::Userstamp::Configuration
   #
   #   Override the attribute by using the stampable class method within a model.
   #
-  #   By default, this is set to +:deleter_id+.
+  #   By default, this is set to +nil+.
   attribute_config :deleter
-  self.deleter_attribute = :deleter_id
 end

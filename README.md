@@ -203,10 +203,13 @@ ActiveRecord::Userstamp.configure do |config|
 end
 ```
 
-Furthermore, there is no need to include the `Userstamp` module in `ApplicationController`.
+### Upgrading from delynn's 2.x without `compatibility_mode`
+Within migrations, it was possible to declare `t.userstamps` within a table definition. It used
+to accept one argument, which declares whether the deleter column should be created. This has
+been changed to respect the gem configuration's `deleter_attribute`. If that is `nil`, then no
+deleter column would be created.
 
-However, this is where the bulk of the work is: since this is a fork of insphire's gem, where he 
-has removed making every `ActiveRecord::Base` subclass automatically a 
+There is also no need to include the `Userstamp` module in `ApplicationController`.
 
 ### Upgrading from magiclabs-userstamp
 
