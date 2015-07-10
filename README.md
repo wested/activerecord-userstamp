@@ -64,8 +64,8 @@ This fork includes changes to perform model stamping before validation. This all
 enforce the presence of stamp attributes:
 
 ```ruby
-  validates :created_by, :presence => true
-  validates :updated_by, :presence => true
+  validates :created_by, presence: true
+  validates :updated_by, presence: true
 ```
 
 Furthermore, the `creator` attribute is set only if the value is blank allowing for a manual

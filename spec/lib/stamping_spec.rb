@@ -12,7 +12,7 @@ RSpec.describe 'Stamping', type: :model do
       it 'sets the correct creator and updater' do
         expect(User.stamper).to eq(@zeus.id)
 
-        person = Person.create(:name => "David")
+        person = Person.create(name: 'David')
         expect(person.creator_id).to eq(@zeus.id)
         expect(person.updater_id).to eq(@zeus.id)
         expect(person.creator).to eq(@zeus)
@@ -23,7 +23,7 @@ RSpec.describe 'Stamping', type: :model do
         it 'does not reset the creator' do
           expect(User.stamper).to eq(@zeus.id)
 
-          person = Person.create(:name => "David", creator: @hera)
+          person = Person.create(name: 'David', creator: @hera)
           expect(person.creator_id).to eq(@hera.id)
           expect(person.updater_id).to eq(@zeus.id)
           expect(person.creator).to eq(@hera)
@@ -35,7 +35,7 @@ RSpec.describe 'Stamping', type: :model do
         it 'sets the correct creator and updater' do
           expect(User.stamper).to eq(@zeus.id)
 
-          person = Person.new(:name => "David")
+          person = Person.new(name: 'David')
           person.save(validate: false)
           expect(person.creator_id).to eq(@zeus.id)
           expect(person.updater_id).to eq(@zeus.id)
@@ -49,7 +49,7 @@ RSpec.describe 'Stamping', type: :model do
           expect(User.stamper).to eq(@zeus.id)
 
           Person.without_stamps do
-            person = Person.create(:name => "David")
+            person = Person.create(name: 'David')
             expect(person.creator_id).to be_nil
             expect(person.updater_id).to be_nil
             expect(person.creator).to be_nil
@@ -64,7 +64,7 @@ RSpec.describe 'Stamping', type: :model do
         User.stamper = @hera.id
         expect(User.stamper).to eq(@hera.id)
 
-        person = Person.create(:name => "Daniel")
+        person = Person.create(name: 'Daniel')
         expect(person.creator_id).to eq(@hera.id)
         expect(person.updater_id).to eq(@hera.id)
         expect(person.creator).to eq(@hera)
@@ -78,7 +78,7 @@ RSpec.describe 'Stamping', type: :model do
       it 'sets the correct creator and updater' do
         expect(Person.stamper).to eq(@delynn.id)
 
-        post = Post.create(:title => "Test Post - 1")
+        post = Post.create(title: 'Test Post - 1')
         expect(post.creator_id).to eq(@delynn.id)
         expect(post.updater_id).to eq(@delynn.id)
         expect(post.creator).to eq(@delynn)
@@ -91,7 +91,7 @@ RSpec.describe 'Stamping', type: :model do
         Person.stamper = @nicole.id
         expect(Person.stamper).to eq(@nicole.id)
 
-        post = Post.create(:title => "Test Post - 2")
+        post = Post.create(title: 'Test Post - 2')
         expect(post.creator_id).to eq(@nicole.id)
         expect(post.updater_id).to eq(@nicole.id)
         expect(post.creator).to eq(@nicole)

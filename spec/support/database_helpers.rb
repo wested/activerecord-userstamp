@@ -8,13 +8,13 @@ def create_test_models
   Post.delete_all
   Comment.delete_all
 
-  @zeus = User.create!(:name => 'Zeus')
-  @hera = User.create!(:name => 'Hera')
+  @zeus = User.create!(name: 'Zeus')
+  @hera = User.create!(name: 'Hera')
   User.stamper = @zeus.id
 
-  @delynn = Person.create!(:name => 'Delynn')
-  @nicole = Person.create!(:name => 'Nicole')
+  @delynn = Person.create!(name: 'Delynn')
+  @nicole = Person.create!(name: 'Nicole')
   Person.stamper = @delynn.id
 
-  @first_post = Post.create!(:title => 'a title')
+  @first_post = Post.create!(title: 'a title')
 end
