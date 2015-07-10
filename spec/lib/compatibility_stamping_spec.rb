@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Compatibility Stamping', type: :model do
   before do
     create_test_models
-    ActiveRecord::Userstamp.compatibility_mode = true
+    ActiveRecord::Userstamp.config.compatibility_mode = true
     Comment.delete_all
     @first_comment = Comment.create!(:comment => 'a comment', :post => @first_post)
   end

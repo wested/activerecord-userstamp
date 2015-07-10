@@ -1,17 +1,4 @@
 module ActiveRecord::Userstamp
-  # Determines what default columns to use for recording the current stamper.
-  # By default this is set to false, so the plug-in will use columns named
-  # <tt>creator_id</tt>, <tt>updater_id</tt>, and <tt>deleter_id</tt>.
-  #
-  # To turn compatibility mode on, place the following line in your environment.rb
-  # file:
-  #
-  #   Ddb::Userstamp.compatibility_mode = true
-  #
-  # This will cause the plug-in to use columns named <tt>created_by</tt>,
-  # <tt>updated_by</tt>, and <tt>deleted_by</tt>.
-  mattr_accessor :compatibility_mode
-  @@compatibility_mode = false
 
   # Extends the stamping functionality of ActiveRecord by automatically recording the model
   # responsible for creating, updating, and deleting the current object. See the Stamper
@@ -73,7 +60,7 @@ module ActiveRecord::Userstamp
       # the :with_deleted option can be used to setup the associations to return objects that have been soft deleted.
       #
       def stampable(options = {})
-        compatability = ActiveRecord::Userstamp.compatibility_mode
+        compatability = ActiveRecord::Userstamp.config.compatibility_mode
         defaults  = {
           :stamper_class_name => :user,
           :creator_attribute  => (compatability ? :created_by : :creator_id),

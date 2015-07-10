@@ -1,5 +1,5 @@
 def reset_to_defaults
-  ActiveRecord::Userstamp.compatibility_mode = false
+  ActiveRecord::Userstamp.config.compatibility_mode = false
   create_test_models
 end
 
