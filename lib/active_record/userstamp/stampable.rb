@@ -7,33 +7,27 @@ module ActiveRecord::Userstamp
     extend ActiveSupport::Concern
 
     included do
-      base = self
-      base.extend(ClassMethods)
-      base.class_eval do
-        include InstanceMethods
+      # Should ActiveRecord record userstamps? Defaults to true.
+      class_attribute  :record_userstamp
+      self.record_userstamp = true
 
-        # Should ActiveRecord record userstamps? Defaults to true.
-        class_attribute  :record_userstamp
-        self.record_userstamp = true
+      # Which class is responsible for stamping? Defaults to :user.
+      class_attribute  :stamper_class_name
 
-        # Which class is responsible for stamping? Defaults to :user.
-        class_attribute  :stamper_class_name
+      # What column should be used for the creator stamp?
+      # Defaults to :creator_id when compatibility mode is off
+      # Defaults to :created_by when compatibility mode is on
+      class_attribute  :creator_attribute
 
-        # What column should be used for the creator stamp?
-        # Defaults to :creator_id when compatibility mode is off
-        # Defaults to :created_by when compatibility mode is on
-        class_attribute  :creator_attribute
+      # What column should be used for the updater stamp?
+      # Defaults to :updater_id when compatibility mode is off
+      # Defaults to :updated_by when compatibility mode is on
+      class_attribute  :updater_attribute
 
-        # What column should be used for the updater stamp?
-        # Defaults to :updater_id when compatibility mode is off
-        # Defaults to :updated_by when compatibility mode is on
-        class_attribute  :updater_attribute
-
-        # What column should be used for the deleter stamp?
-        # Defaults to :deleter_id when compatibility mode is off
-        # Defaults to :deleted_by when compatibility mode is on
-        class_attribute  :deleter_attribute
-      end
+      # What column should be used for the deleter stamp?
+      # Defaults to :deleter_id when compatibility mode is off
+      # Defaults to :deleted_by when compatibility mode is on
+      class_attribute  :deleter_attribute
     end
 
     module ClassMethods
@@ -124,39 +118,37 @@ module ActiveRecord::Userstamp
       end
     end
 
-    module InstanceMethods #:nodoc:
-      private
-        def has_stamper?
-          !self.class.stamper_class.nil? && !self.class.stamper_class.stamper.nil? rescue false
-        end
+    private
 
-        def set_creator_attribute
-          return unless self.record_userstamp
-          if respond_to?(self.creator_attribute.to_sym) && has_stamper?
-            if self.send(self.creator_attribute.to_sym).blank?
-              self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
-            end
-          end
-        end
+    def has_stamper?
+      !self.class.stamper_class.nil? && !self.class.stamper_class.stamper.nil? rescue false
+    end
 
-        def set_updater_attribute
-          return unless self.record_userstamp
-          # only set updater if the record is new or has changed
-          # or contains a serialized attribute (in which case the attribute value is always updated)
-          return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
-          if respond_to?(self.updater_attribute.to_sym) && has_stamper?
-            self.send("#{self.updater_attribute}=".to_sym, self.class.stamper_class.stamper)
-          end
+    def set_creator_attribute
+      return unless self.record_userstamp
+      if respond_to?(self.creator_attribute.to_sym) && has_stamper?
+        if self.send(self.creator_attribute.to_sym).blank?
+          self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
         end
+      end
+    end
 
-        def set_deleter_attribute
-          return unless self.record_userstamp
-          if respond_to?(self.deleter_attribute.to_sym) && has_stamper?
-            self.send("#{self.deleter_attribute}=".to_sym, self.class.stamper_class.stamper)
-            save
-          end
-        end
-      #end private
+    def set_updater_attribute
+      return unless self.record_userstamp
+      # only set updater if the record is new or has changed
+      # or contains a serialized attribute (in which case the attribute value is always updated)
+      return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
+      if respond_to?(self.updater_attribute.to_sym) && has_stamper?
+        self.send("#{self.updater_attribute}=".to_sym, self.class.stamper_class.stamper)
+      end
+    end
+
+    def set_deleter_attribute
+      return unless self.record_userstamp
+      if respond_to?(self.deleter_attribute.to_sym) && has_stamper?
+        self.send("#{self.deleter_attribute}=".to_sym, self.class.stamper_class.stamper)
+        save
+      end
     end
   end
 end
