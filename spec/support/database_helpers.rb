@@ -7,7 +7,6 @@ def create_test_models
   Person.delete_all
   Post.delete_all
   Comment.delete_all
-  Foo.delete_all
 
   @zeus = User.create!(:name => 'Zeus')
   @hera = User.create!(:name => 'Hera')

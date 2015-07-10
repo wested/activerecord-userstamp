@@ -143,28 +143,11 @@ RSpec.describe 'Stamping', type: :model do
     end
   end
 
-  context 'when no deleter column is present' do
-    it 'does not create a deleter relation' do
-      expect(@delynn.respond_to?('creator')).to eq(true)
-      expect(@delynn.respond_to?('updater')).to eq(true)
-      expect(@delynn.respond_to?('deleter')).to eq(false)
-    end
-  end
-
-  context 'when a deleter column is present' do
+  context 'when a deleter attribute is specified' do
     it 'creates a deleter relation' do
       expect(@first_post.respond_to?('creator')).to eq(true)
       expect(@first_post.respond_to?('updater')).to eq(true)
       expect(@first_post.respond_to?('deleter')).to eq(true)
-    end
-  end
-
-  context 'when the deleter attribute is explicitly set' do
-    it 'creates a deleter relation' do
-      @foo = Foo.create
-      expect(@foo.respond_to?('creator')).to eq(true)
-      expect(@foo.respond_to?('updater')).to eq(true)
-      expect(@foo.respond_to?('deleter')).to eq(true)
     end
   end
 end

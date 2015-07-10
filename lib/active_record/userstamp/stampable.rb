@@ -13,26 +13,6 @@ module ActiveRecord::Userstamp
 
       # Which class is responsible for stamping? Defaults to :user.
       class_attribute  :stamper_class_name
-
-      # What column should be used for the creator stamp?
-      # Defaults to :creator_id when compatibility mode is off
-      # Defaults to :created_by when compatibility mode is on
-      class_attribute  :creator_attribute
-
-      # What column should be used for the updater stamp?
-      # Defaults to :updater_id when compatibility mode is off
-      # Defaults to :updated_by when compatibility mode is on
-      class_attribute  :updater_attribute
-
-      # What column should be used for the deleter stamp?
-      # Defaults to :deleter_id when compatibility mode is off
-      # Defaults to :deleted_by when compatibility mode is on
-      class_attribute  :deleter_attribute
-
-      delegate :creator_attribute, to: :class
-      delegate :updater_attribute, to: :class
-      delegate :deleter_attribute, to: :class
-      private :creator_attribute, :updater_attribute, :deleter_attribute
     end
 
     module ClassMethods
@@ -42,9 +22,6 @@ module ActiveRecord::Userstamp
       #
       #   class Post < ActiveRecord::Base
       #     stampable :stamper_class_name => :person,
-      #               :creator_attribute  => :create_user,
-      #               :updater_attribute  => :update_user,
-      #               :deleter_attribute  => :delete_user,
       #               :with_deleted       => true
       #   end
       #
@@ -60,26 +37,21 @@ module ActiveRecord::Userstamp
       def stampable(options = {})
         defaults  = options.reverse_merge(
           stamper_class_name: :user,
-          creator_attribute:  ActiveRecord::Userstamp.config.creator_attribute,
-          updater_attribute:  ActiveRecord::Userstamp.config.updater_attribute,
-          deleter_attribute:  ActiveRecord::Userstamp.config.deleter_attribute,
           with_deleted:       false
         )
 
         self.stamper_class_name = defaults[:stamper_class_name].to_sym
-        self.creator_attribute  = defaults[:creator_attribute].to_sym
-        self.updater_attribute  = defaults[:updater_attribute].to_sym
-        self.deleter_attribute  = defaults[:deleter_attribute].to_sym if defaults[:deleter_attribute]
 
         class_eval do
           klass = "::#{stamper_class_name.to_s.singularize.camelize}"
+          config = ActiveRecord::Userstamp.config
 
           if defaults[:with_deleted]
-            belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute, :with_deleted => true
-            belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute, :with_deleted => true
+            belongs_to :creator, class_name: klass, foreign_key: config.creator_attribute, with_deleted: true
+            belongs_to :updater, class_name: klass, foreign_key: config.updater_attribute, with_deleted: true
           else
-            belongs_to :creator, :class_name => klass, :foreign_key => creator_attribute
-            belongs_to :updater, :class_name => klass, :foreign_key => updater_attribute
+            belongs_to :creator, class_name: klass, foreign_key: config.creator_attribute
+            belongs_to :updater, class_name: klass, foreign_key: config.updater_attribute
           end
 
           before_validation :set_updater_attribute
@@ -87,11 +59,11 @@ module ActiveRecord::Userstamp
           before_save :set_updater_attribute
           before_save :set_creator_attribute, :on => :create
 
-          if deleter_attribute
+          if config.deleter_attribute
             if defaults[:with_deleted]
-              belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute, :with_deleted => true
+              belongs_to :deleter, class_name: klass, foreign_key: config.deleter_attribute, with_deleted: true
             else
-              belongs_to :deleter, :class_name => klass, :foreign_key => deleter_attribute
+              belongs_to :deleter, class_name: klass, foreign_key: config.deleter_attribute
             end
 
             before_destroy :set_deleter_attribute
@@ -128,9 +100,9 @@ module ActiveRecord::Userstamp
 
     def set_creator_attribute
       return unless self.record_userstamp
-      if respond_to?(creator_attribute.to_sym) && has_stamper?
-        if self.send(creator_attribute.to_sym).blank?
-          self.send("#{creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(ActiveRecord::Userstamp.config.creator_attribute) && has_stamper?
+        if self.send(ActiveRecord::Userstamp.config.creator_attribute).blank?
+          self.send("#{ActiveRecord::Userstamp.config.creator_attribute}=", self.class.stamper_class.stamper)
         end
       end
     end
@@ -140,15 +112,15 @@ module ActiveRecord::Userstamp
       # only set updater if the record is new or has changed
       # or contains a serialized attribute (in which case the attribute value is always updated)
       return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
-      if respond_to?(updater_attribute.to_sym) && has_stamper?
-        self.send("#{updater_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(ActiveRecord::Userstamp.config.updater_attribute) && has_stamper?
+        self.send("#{ActiveRecord::Userstamp.config.updater_attribute}=", self.class.stamper_class.stamper)
       end
     end
 
     def set_deleter_attribute
       return unless self.record_userstamp
-      if respond_to?(deleter_attribute.to_sym) && has_stamper?
-        self.send("#{deleter_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(ActiveRecord::Userstamp.config.deleter_attribute) && has_stamper?
+        self.send("#{ActiveRecord::Userstamp.config.deleter_attribute}=", self.class.stamper_class.stamper)
         save
       end
     end

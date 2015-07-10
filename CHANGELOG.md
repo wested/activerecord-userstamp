@@ -9,6 +9,9 @@
                         configuration for the `deleter_attribute` configuration option instead of
                         relying on the user to specify in every migration.
   * Joel Low          - Remove the `deleter` option from the `stampable` model declaration.
+  * Joel Low          - Remove the `creator_attribute`, `updater_attribute`, and `deleter_attribute`
+                        options from the `stampable` model declaration. All models will follow
+                        the gem configuration.
 
  ## 2.1.1 (9/4/2015)
 

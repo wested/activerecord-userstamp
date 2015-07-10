@@ -183,9 +183,6 @@ completely customized. Here's an quick example:
 
   class Post < ActiveRecord::Base
     stampable :stamper_class_name => :person,
-              :creator_attribute  => :create_user,
-              :updater_attribute  => :update_user,
-              :deleter_attribute  => :delete_user,
               :with_deleted => true
   end
 
@@ -209,6 +206,15 @@ been changed to respect the gem configuration's `deleter_attribute`. If that is 
 deleter column would be created.
 
 There is also no need to include the `Userstamp` module in `ApplicationController`.
+
+### Upgrading from insphire's 2.0.1
+
+That version of the gem allows every model to declare the name of the column containing the
+attribute.
+
+To use this gem, normalise all database columns to use a consistent set of column names.
+Configure the gem to use those names (as above) and remove all the `creator_attribute`,
+`updater_attribute`, and `deleter_attribute` declarations.
 
 ### Upgrading from magiclabs-userstamp
 
