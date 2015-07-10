@@ -43,6 +43,20 @@ RSpec.describe 'Stamping', type: :model do
           expect(person.updater).to eq(@zeus)
         end
       end
+
+      context 'when temporarily disabling stampng' do
+        it 'does not set the creator and updater' do
+          expect(User.stamper).to eq(@zeus.id)
+
+          Person.without_stamps do
+            person = Person.create(:name => "David")
+            expect(person.creator_id).to be_nil
+            expect(person.updater_id).to be_nil
+            expect(person.creator).to be_nil
+            expect(person.updater).to be_nil
+          end
+        end
+      end
     end
 
     context 'when the stamper is an ID' do
@@ -99,6 +113,24 @@ RSpec.describe 'Stamping', type: :model do
         expect(@delynn.updater).to eq(@hera)
         expect(@delynn.creator_id).to eq(@zeus.id)
         expect(@delynn.updater_id).to eq(@hera.id)
+      end
+    end
+
+    context 'when temporarily disabling stamping' do
+      it 'does not set the updater' do
+        User.stamper = @zeus
+        expect(User.stamper).to eq(@zeus.id)
+
+        original_updater = @delynn.updater
+        Person.without_stamps do
+          @delynn.name << " Berry"
+          @delynn.save
+          @delynn.reload
+          expect(@delynn.creator).to eq(@zeus)
+          expect(@delynn.updater).to eq(original_updater)
+          expect(@delynn.creator_id).to eq(@zeus.id)
+          expect(@delynn.updater_id).to eq(original_updater.id)
+        end
       end
     end
   end
