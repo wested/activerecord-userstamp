@@ -82,26 +82,29 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   def set_creator_attribute
-    if respond_to?(ActiveRecord::Userstamp.config.creator_attribute) && has_stamper?
-      if self.send(ActiveRecord::Userstamp.config.creator_attribute).blank?
-        self.send("#{ActiveRecord::Userstamp.config.creator_attribute}=", self.class.stamper_class.stamper)
-      end
-    end
+    creator_attribute = ActiveRecord::Userstamp.config.creator_attribute
+    return if !has_stamper? || !has_attribute?(creator_attribute)
+
+    current_attribute_value = send(creator_attribute)
+    return if current_attribute_value.present?
+
+    send("#{creator_attribute}=", self.class.stamper_class.stamper)
   end
 
   def set_updater_attribute
-    # only set updater if the record is new or has changed
-    # or contains a serialized attribute (in which case the attribute value is always updated)
-    return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
-    if respond_to?(ActiveRecord::Userstamp.config.updater_attribute) && has_stamper?
-      self.send("#{ActiveRecord::Userstamp.config.updater_attribute}=", self.class.stamper_class.stamper)
-    end
+    updater_attribute = ActiveRecord::Userstamp.config.updater_attribute
+    return if !has_stamper? || !has_attribute?(updater_attribute)
+
+    return if !self.new_record? && !self.changed?
+
+    send("#{updater_attribute}=", self.class.stamper_class.stamper)
   end
 
   def set_deleter_attribute
-    if respond_to?(ActiveRecord::Userstamp.config.deleter_attribute) && has_stamper?
-      self.send("#{ActiveRecord::Userstamp.config.deleter_attribute}=", self.class.stamper_class.stamper)
-      save
-    end
+    deleter_attribute = ActiveRecord::Userstamp.config.deleter_attribute
+    return if !has_stamper? || !has_attribute?(deleter_attribute)
+
+    send("#{deleter_attribute}=", self.class.stamper_class.stamper)
+    save
   end
 end
