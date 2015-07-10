@@ -16,20 +16,23 @@ RSpec.describe 'Migration helpers', type: :model do
     subject { self.class::DefaultRandom.new }
 
     temporary_table(:default_randoms) do |t|
-      t.userstamps
+      t.userstamps(null: false)
     end
 
     with_temporary_table(:default_randoms) do
       it 'has a creator_id association' do
         expect(subject.has_attribute?(:creator_id)).to be true
+        expect(subject.class.columns.find {|c| c.name == 'creator_id' }.null).to be false
       end
 
       it 'has an updater_id association' do
         expect(subject.has_attribute?(:updater_id)).to be true
+        expect(subject.class.columns.find {|c| c.name == 'updater_id' }.null).to be false
       end
 
       it 'has a deleter_id association' do
         expect(subject.has_attribute?(:deleter_id)).to be true
+        expect(subject.class.columns.find {|c| c.name == 'deleter_id' }.null).to be false
       end
     end
   end
