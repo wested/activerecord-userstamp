@@ -28,6 +28,11 @@ module ActiveRecord::Userstamp
       # Defaults to :deleter_id when compatibility mode is off
       # Defaults to :deleted_by when compatibility mode is on
       class_attribute  :deleter_attribute
+
+      delegate :creator_attribute, to: :class
+      delegate :updater_attribute, to: :class
+      delegate :deleter_attribute, to: :class
+      private :creator_attribute, :updater_attribute, :deleter_attribute
     end
 
     module ClassMethods
@@ -54,15 +59,14 @@ module ActiveRecord::Userstamp
       # the :with_deleted option can be used to setup the associations to return objects that have been soft deleted.
       #
       def stampable(options = {})
-        compatability = ActiveRecord::Userstamp.config.compatibility_mode
-        defaults  = {
-          :stamper_class_name => :user,
-          :creator_attribute  => (compatability ? :created_by : :creator_id),
-          :updater_attribute  => (compatability ? :updated_by : :updater_id),
-          :deleter_attribute  => (compatability ? :deleted_by : :deleter_id),
-          :deleter            => options.has_key?(:deleter_attribute),
-          :with_deleted       => false
-        }.merge(options)
+        defaults  = options.reverse_merge(
+          stamper_class_name: :user,
+          creator_attribute:  ActiveRecord::Userstamp.config.creator_attribute,
+          updater_attribute:  ActiveRecord::Userstamp.config.updater_attribute,
+          deleter_attribute:  ActiveRecord::Userstamp.config.deleter_attribute,
+          deleter:            options.has_key?(:deleter_attribute),
+          with_deleted:       false
+        )
 
         self.stamper_class_name = defaults[:stamper_class_name].to_sym
         self.creator_attribute  = defaults[:creator_attribute].to_sym
@@ -126,9 +130,9 @@ module ActiveRecord::Userstamp
 
     def set_creator_attribute
       return unless self.record_userstamp
-      if respond_to?(self.creator_attribute.to_sym) && has_stamper?
-        if self.send(self.creator_attribute.to_sym).blank?
-          self.send("#{self.creator_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(creator_attribute.to_sym) && has_stamper?
+        if self.send(creator_attribute.to_sym).blank?
+          self.send("#{creator_attribute}=".to_sym, self.class.stamper_class.stamper)
         end
       end
     end
@@ -138,15 +142,15 @@ module ActiveRecord::Userstamp
       # only set updater if the record is new or has changed
       # or contains a serialized attribute (in which case the attribute value is always updated)
       return unless self.new_record? || self.changed? || self.class.serialized_attributes.present?
-      if respond_to?(self.updater_attribute.to_sym) && has_stamper?
-        self.send("#{self.updater_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(updater_attribute.to_sym) && has_stamper?
+        self.send("#{updater_attribute}=".to_sym, self.class.stamper_class.stamper)
       end
     end
 
     def set_deleter_attribute
       return unless self.record_userstamp
-      if respond_to?(self.deleter_attribute.to_sym) && has_stamper?
-        self.send("#{self.deleter_attribute}=".to_sym, self.class.stamper_class.stamper)
+      if respond_to?(deleter_attribute.to_sym) && has_stamper?
+        self.send("#{deleter_attribute}=".to_sym, self.class.stamper_class.stamper)
         save
       end
     end
