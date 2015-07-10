@@ -12,6 +12,8 @@
   * Joel Low          - Remove the `creator_attribute`, `updater_attribute`, and `deleter_attribute`
                         options from the `stampable` model declaration. All models will follow
                         the gem configuration.
+  * Joel Low          - Added the `default_stamper` configuration option. The controller will
+                        automatically stamp using that model.
 
  ## 2.1.1 (9/4/2015)
 

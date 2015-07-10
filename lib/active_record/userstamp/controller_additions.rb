@@ -20,14 +20,14 @@ module ActiveRecord::Userstamp::ControllerAdditions
   # your application you will want to manually add your own implementation of this method to the
   # private section of your +ApplicationController+
   def set_stamper
-    User.stamper = self.current_user
+    ActiveRecord::Userstamp.config.default_stamper_class.stamper = current_user
   end
 
   # The +reset_stamper+ method as implemented here assumes that a +User+ model is being used as
   # the stamper. If this is not the case then you will need to manually add your own
   # implementation of this method to the private section of your +ApplicationController+
   def reset_stamper
-    User.reset_stamper
+    ActiveRecord::Userstamp.config.default_stamper_class.reset_stamper
   end
 end
 

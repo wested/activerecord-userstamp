@@ -11,7 +11,6 @@ module ActiveRecord::Userstamp
       class_attribute  :record_userstamp
       self.record_userstamp = true
 
-      # Which class is responsible for stamping? Defaults to :user.
       class_attribute  :stamper_class_name
     end
 
@@ -36,14 +35,13 @@ module ActiveRecord::Userstamp
       #
       def stampable(options = {})
         defaults  = options.reverse_merge(
-          stamper_class_name: :user,
           with_deleted:       false
         )
 
-        self.stamper_class_name = defaults[:stamper_class_name].to_sym
+        self.stamper_class_name = defaults[:stamper_class_name].to_sym if defaults[:stamper_class_name]
 
         class_eval do
-          klass = "::#{stamper_class_name.to_s.singularize.camelize}"
+          klass = stamper_class.try(:name)
           config = ActiveRecord::Userstamp.config
 
           if defaults[:with_deleted]
