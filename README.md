@@ -79,32 +79,35 @@ to the application's Gemfile:
   gem 'activerecord-userstamp'
 ```
 
+Define an initializer in your Rails application to configure the gem:
+
+```ruby
+ActiveRecord::Userstamp.configure do |config|
+  config.deleter_attribute = nil
+end
+```
+
+By default, `:deleter_attribute` is set to `:deleter_id` for soft deletes. If you are not using
+soft deletes, you can set the attribute no `nil`.
+
 Ensure that each model has a set of columns for creators, updaters, and deleters (if applicable.)
 
 ```ruby
   class CreateUsers < ActiveRecord::Migration
-    def self.up
-      create_table :users, :force => true do |t|
+    def change
+      create_table :users do |t|
         ...
-        t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
+        t.userstamps
       end
-    end
-
-    def self.down
-      drop_table :users
     end
   end
 
   class CreatePosts < ActiveRecord::Migration
-    def self.up
-      create_table :posts, :force => true do |t|
+    def change
+      create_table :posts do |t|
         ...
-        t.userstamps # use t.userstamps(true) if you also want 'deleter_id'
+        t.userstamps
       end
-    end
-
-    def self.down
-      drop_table :posts
     end
   end
 ```
@@ -117,74 +120,22 @@ Declare the stamper on the User model:
   end
 ```
 
-And declare that the Posts are stampable:
-
-```ruby
-  class Post < ActiveRecord::Base
-    stampable
-  end
-```
-
 If your stamper is called `User`, that's it; you're done.
 
 ## Customisation
-More than likely you want all your associations setup on your stamped objects, and that's where the
-`stampable` class method comes in. So in our example we'll want to use this method in both our 
-User and Post classes:
+The association which is created on each of the `creator_id`, `updater_id`, and `deleter_id` can
+be customised. Also, the stamper used by each class can also be customised. For this purpose, the
+ `ActiveRecord::Base.stampable` method can be used:
 
 ```ruby
-  class User < ActiveRecord::Base
-    model_stamper
-    stampable
-  end
-
   class Post < ActiveRecord::Base
     stampable
   end
 ```
 
-Okay, so what all have we done? The `model_stamper` class method injects two methods into the
-`User` class. They are `#stamper=` and `#stamper` and look like this:
-
-  def stamper=(object)
-    object_stamper = if object.is_a?(ActiveRecord::Base)
-      object.send("#{object.class.primary_key}".to_sym)
-    else
-      object
-    end
-
-    Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"] = object_stamper
-  end
-
-  def stamper
-    Thread.current["#{self.to_s.downcase}_#{self.object_id}_stamper"]
-  end
-
-The `stampable` method allows you to customize what columns will get stamped, and also creates the
-`creator`, `updater`, and `deleter` associations.
-
-The Userstamp module that we included into our ApplicationController uses the setter method to
-set which user is currently making the request. By default the 'set_stampers' method works perfectly
-with the RestfulAuthentication[http://svn.techno-weenie.net/projects/plugins/restful_authentication] plug-in:
-
-  def set_stampers
-    User.stamper = self.current_user
-  end
-
-If you aren't using ActsAsAuthenticated, then you need to create your own version of the
-<tt>set_stampers</tt> method in the controller where you've included the Userstamp module.
-
-Now, let's get back to the Stampable module (since it really is the interesting one). The Stampable
-module sets up before_* filters that are responsible for setting those attributes at the appropriate
-times. It also creates the belongs_to relationships for you.
-
-If you need to customize the columns that are stamped, the <tt>stampable</tt> method can be
-completely customized. Here's an quick example:
-
-  class Post < ActiveRecord::Base
-    stampable :stamper_class_name => :person,
-              :with_deleted => true
-  end
+The `stampable` method allows you to customize the `creator`, `updater`, and `deleter` associations.
+It also allows you to specify the name of the stamper for the class being declared. Any additional
+arguments are passed to the `belongs_to` declaration.
 
 ## Upgrading
 ### Upgrading from delynn's 1.x/2.x with `compatibility_mode`
@@ -207,7 +158,7 @@ deleter column would be created.
 
 There is also no need to include the `Userstamp` module in `ApplicationController`.
 
-### Upgrading from insphire's 2.0.1
+### Upgrading from insphire's 2.0.1, or magiclabs-userstamp 2.0.2 or 2.1.0
 
 That version of the gem allows every model to declare the name of the column containing the
 attribute. That also means that in a large project, every model needs to declare `stampable`,
@@ -215,8 +166,6 @@ which is not very DRY.
 
 To use this gem, normalise all database columns to use a consistent set of column names.
 Configure the gem to use those names (as above) and remove all `stampable` declarations.
-
-### Upgrading from magiclabs-userstamp
 
 There is no need to include the `Userstamp` module in `ApplicationController`.
 
