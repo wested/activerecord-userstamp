@@ -16,6 +16,10 @@
                         automatically stamp using that model.
   * Joel Low          - Additional attributes passed to `stampable` would be passed to the
                         underlying `belongs_to` association.
+  * Joel Low          - Declare the creator/updater/deleter setter callbacks directly in
+                        `ActiveRecord::Base`. So now, all models will automatically be stamped
+                        when the creator/updater/deleter attributes are present. This mirrors
+                        `ActiveRecord::Timestamp` behaviour.
 
  ## 2.1.1 (9/4/2015)
 

@@ -10,27 +10,27 @@ module ActiveRecord::Userstamp::Stampable
     self.record_userstamp = true
 
     class_attribute  :stamper_class_name
+
+    before_validation :set_updater_attribute, if: :record_userstamp
+    before_validation :set_creator_attribute, on: :create, if: :record_userstamp
+    before_save :set_updater_attribute, if: :record_userstamp
+    before_save :set_creator_attribute, on: :create, if: :record_userstamp
+    before_destroy :set_deleter_attribute, if: :record_userstamp
   end
 
   module ClassMethods
-    # This method is automatically called on for all classes that inherit from
-    # ActiveRecord, but if you need to customize how the plug-in functions, this is the
-    # method to use. Here's an example:
+    # This method customizes how the gem functions. For example:
     #
     #   class Post < ActiveRecord::Base
-    #     stampable :stamper_class_name => :person,
-    #               :with_deleted       => true
+    #     stampable stamper_class_name: Person.name,
+    #               with_deleted:       true
     #   end
     #
-    # The method will automatically setup all the associations,
-    # and create <tt>before_validation</tt> & <tt>before_destroy</tt> callbacks for doing the stamping.
+    # The method will set up all the associations. Extra arguments (like +:with_deleted+) will be
+    # propagated to the associations.
     #
-    # By default, the deleter association and before filter are not defined unless
-    # you set the :deleter_attribute or set the :deleter option to true.
-    #
-    # When using the new acts_as_paranoid gem (https://github.com/goncalossilva/rails3_acts_as_paranoid)
-    # the :with_deleted option can be used to setup the associations to return objects that have been soft deleted.
-    #
+    # By default, the deleter association is not defined unless the :deleter_attribute is set in
+    # the gem configuration.
     def stampable(options = {})
       self.stamper_class_name = options.delete(:stamper_class_name) if options.key?(:stamper_class_name)
 
@@ -42,15 +42,9 @@ module ActiveRecord::Userstamp::Stampable
         belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
         belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)
 
-        before_validation :set_updater_attribute, if: :record_userstamp
-        before_validation :set_creator_attribute, on: :create, if: :record_userstamp
-        before_save :set_updater_attribute, if: :record_userstamp
-        before_save :set_creator_attribute, on: :create, if: :record_userstamp
 
         if config.deleter_attribute
           belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute)
-
-          before_destroy :set_deleter_attribute, if: :record_userstamp
         end
       end
     end
@@ -83,7 +77,7 @@ module ActiveRecord::Userstamp::Stampable
 
   def set_creator_attribute
     creator_attribute = ActiveRecord::Userstamp.config.creator_attribute
-    return if !has_stamper? || !has_attribute?(creator_attribute)
+    return if !has_stamper? || creator_attribute.nil? || !has_attribute?(creator_attribute)
 
     current_attribute_value = send(creator_attribute)
     return if current_attribute_value.present?
@@ -93,7 +87,7 @@ module ActiveRecord::Userstamp::Stampable
 
   def set_updater_attribute
     updater_attribute = ActiveRecord::Userstamp.config.updater_attribute
-    return if !has_stamper? || !has_attribute?(updater_attribute)
+    return if !has_stamper? || updater_attribute.nil? || !has_attribute?(updater_attribute)
 
     return if !self.new_record? && !self.changed?
 
@@ -102,7 +96,7 @@ module ActiveRecord::Userstamp::Stampable
 
   def set_deleter_attribute
     deleter_attribute = ActiveRecord::Userstamp.config.deleter_attribute
-    return if !has_stamper? || !has_attribute?(deleter_attribute)
+    return if !has_stamper? || deleter_attribute.nil? || !has_attribute?(deleter_attribute)
 
     send("#{deleter_attribute}=", self.class.stamper_class.stamper)
     save

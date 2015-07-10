@@ -11,8 +11,6 @@ module ActiveRecord::Userstamp
     autoload :ModelAdditions
   end
 
-  eager_load!
-
   # Retrieves the configuration for the userstamp gem.
   #
   # @return [ActiveRecord::Userstamp::Configuration]
@@ -26,4 +24,6 @@ module ActiveRecord::Userstamp
   def self.configure
     yield config
   end
+
+  eager_load!
 end

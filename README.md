@@ -210,11 +210,11 @@ There is also no need to include the `Userstamp` module in `ApplicationControlle
 ### Upgrading from insphire's 2.0.1
 
 That version of the gem allows every model to declare the name of the column containing the
-attribute.
+attribute. That also means that in a large project, every model needs to declare `stampable`,
+which is not very DRY.
 
 To use this gem, normalise all database columns to use a consistent set of column names.
-Configure the gem to use those names (as above) and remove all the `creator_attribute`,
-`updater_attribute`, and `deleter_attribute` declarations.
+Configure the gem to use those names (as above) and remove all `stampable` declarations.
 
 ### Upgrading from magiclabs-userstamp
 
