@@ -14,6 +14,8 @@
                         the gem configuration.
   * Joel Low          - Added the `default_stamper` configuration option. The controller will
                         automatically stamp using that model.
+  * Joel Low          - Additional attributes passed to `stampable` would be passed to the
+                        underlying `belongs_to` association.
 
  ## 2.1.1 (9/4/2015)
 
