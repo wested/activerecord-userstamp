@@ -193,7 +193,15 @@ completely customized. Here's an quick example:
 ## Upgrading
 ### Upgrading from delynn's 1.x/2.x with `compatibility_mode`
 The major difference between 1.x and 2.x is the naming of the columns. This version of the gem 
-allows specifying the name of the column from the gem configuration.
+allows specifying the name of the column from the gem configuration:
+
+```ruby
+ActiveRecord::Userstamp.configure do |config|
+  config.creator_attribute = :created_by
+  config.updater_attribute = :updated_by
+  config.deleter_attribute = :deleted_by
+end
+```
 
 Furthermore, there is no need to include the `Userstamp` module in `ApplicationController`.
 

@@ -1,5 +1,9 @@
  # Changelog
 
+ ## 3.0.0
+  * Joel Low          - Remove `compatibility_mode`. Use the `creator_attribute`,
+                        `updater_attribute`, and `deleter_attribute` configuration options instead.
+
  ## 2.1.1 (9/4/2015)
 
   * Chris Hilton      - Only set updater attribute if the record has changed or contains a
