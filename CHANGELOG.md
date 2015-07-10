@@ -3,6 +3,8 @@
  ## 3.0.0
   * Joel Low          - Remove `compatibility_mode`. Use the `creator_attribute`,
                         `updater_attribute`, and `deleter_attribute` configuration options instead.
+  * Joel Low          - The table definition migration helper should follow the gem configuration
+                        when generating column names.
 
  ## 2.1.1 (9/4/2015)
 
