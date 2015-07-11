@@ -134,6 +134,21 @@ RSpec.describe 'Stamping', type: :model do
       end
     end
 
+    context 'when the stamper is an ID' do
+      it 'sets the correct updater' do
+        User.stamper = @hera.id
+        expect(User.stamper).to eq(@hera.id)
+
+        @delynn.name << " Berry"
+        @delynn.save
+        @delynn.reload
+        expect(@delynn.creator_id).to eq(@zeus.id)
+        expect(@delynn.updater_id).to eq(@hera.id)
+        expect(@delynn.creator).to eq(@zeus)
+        expect(@delynn.updater).to eq(@hera)
+      end
+    end
+
     context 'when temporarily disabling stamping' do
       it 'does not set the updater' do
         User.stamper = @zeus
@@ -150,21 +165,6 @@ RSpec.describe 'Stamping', type: :model do
           expect(@delynn.updater_id).to eq(original_updater.id)
         end
       end
-    end
-  end
-
-  context 'when the stamper is an ID' do
-    it 'sets the correct updater' do
-      User.stamper = @hera.id
-      expect(User.stamper).to eq(@hera.id)
-
-      @delynn.name << " Berry"
-      @delynn.save
-      @delynn.reload
-      expect(@delynn.creator_id).to eq(@zeus.id)
-      expect(@delynn.updater_id).to eq(@hera.id)
-      expect(@delynn.creator).to eq(@zeus)
-      expect(@delynn.updater).to eq(@hera)
     end
   end
 
