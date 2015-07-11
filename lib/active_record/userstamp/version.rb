@@ -1,4 +1,4 @@
 module ActiveRecord; end
 module ActiveRecord::Userstamp
-  VERSION = '3.0.0'
+  VERSION = '3.0.1'
 end
