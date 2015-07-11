@@ -17,28 +17,29 @@ module ActiveRecord::TemporaryTable::TestGroupHelpers
   # Using the temporary table defined previously, run the examples in this group.
   #
   # @param [Symbol] table_name The name of the table to use.
+  # @param [Symbol] create_at When to create the table. Defaults to :context.
   # @param [Proc] proc The examples requiring the use of the temporary table.
-  def with_temporary_table(table_name, &proc)
+  def with_temporary_table(table_name, create_at = :context, &proc)
     context "with temporary table #{table_name}" do |*params|
-      before(:each) do
-        ActiveRecord::TemporaryTable::TestGroupHelpers.before_context(table_name, send(table_name))
+      before(create_at) do
+        ActiveRecord::TemporaryTable::TestGroupHelpers.create_table(table_name, send(table_name))
       end
 
-      after(:each) do
-        ActiveRecord::TemporaryTable::TestGroupHelpers.after_context(table_name)
+      after(create_at) do
+        ActiveRecord::TemporaryTable::TestGroupHelpers.drop_table(table_name)
       end
 
       module_exec(*params, &proc)
     end
   end
 
-  def self.before_context(table_name, table_definition)
+  def self.create_table(table_name, table_definition)
     ActiveRecord::Migration.suppress_messages do
       ActiveRecord::Migration.create_table(table_name, &table_definition)
     end
   end
 
-  def self.after_context(table_name)
+  def self.drop_table(table_name)
     ActiveRecord::Migration.suppress_messages do
       ActiveRecord::Migration.drop_table(table_name)
     end

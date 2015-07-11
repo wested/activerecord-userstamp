@@ -54,7 +54,7 @@ RSpec.describe 'Migration helpers', type: :model do
       t.userstamps
     end
 
-    with_temporary_table(:overridden_randoms) do
+    with_temporary_table(:overridden_randoms, :each) do
       it 'has a created_by attribute' do
         expect(subject.has_attribute?(:created_by)).to be true
       end
