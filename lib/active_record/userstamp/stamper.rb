@@ -50,11 +50,6 @@ module ActiveRecord::Userstamp::Stamper
     #   @param [ActiveRecord::Base] object The stamper object.
     #   @return [void]
     def push_stamper(object)
-      if object.is_a?(ActiveRecord::Base)
-        primary_key = "#{object.class.primary_key}".to_sym
-        object = object.send(primary_key)
-      end
-
       stamper_stack.push(object)
     end
 

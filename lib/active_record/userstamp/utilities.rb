@@ -36,5 +36,19 @@ module ActiveRecord::Userstamp::Utilities
   rescue ActiveRecord::StatementInvalid => _
     nil
   end
-end
 
+  # Assigns the given attribute to the record, based on the model's stamper.
+  #
+  # If the stamper is a record, then it is assigned to the attribute; if it is a number, then it
+  # is assigned to the +_id+ attribute
+  #
+  # @param [ActiveRecord::Base] record The record to assign.
+  # @param [Symbol] attribute The attribute to assign.
+  def self.assign_attribute(record, attribute)
+    attribute = attribute.to_s
+    stamp_value = record.class.stamper_class.stamper
+
+    attribute = attribute[0..-4] if !stamp_value.is_a?(Fixnum) && attribute.end_with?('_id')
+    record.send("#{attribute}=", stamp_value)
+  end
+end

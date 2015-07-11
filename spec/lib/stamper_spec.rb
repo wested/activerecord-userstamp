@@ -26,7 +26,7 @@ RSpec.describe 'Stamper' do
     it 'assigns the stamper' do
       stamper = User.new
       User.stamper = stamper
-      expect(User.stamper).to eq(stamper.id)
+      expect(User.stamper).to eq(stamper)
     end
 
     context 'when the stamper is nil' do
@@ -48,7 +48,7 @@ RSpec.describe 'Stamper' do
     it 'pushes the stamper onto the stack' do
       stamper = User.create(name: 'Joel')
       User.push_stamper(stamper)
-      expect(User.stamper).to eq(stamper.id)
+      expect(User.stamper).to eq(stamper)
     end
   end
 

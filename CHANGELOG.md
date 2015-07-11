@@ -4,6 +4,11 @@
                         of only one value. This allows setting a value for tests, and controller
                         specs would reset the default test stamper when the controller test
                         finishes running.
+  * Joel Low          - Depending on what was set to a stamper (ID or record object), the
+                        association ID or association setter is used to assign the
+                        creator/updater/deleter attributes. This only applies if the attributes
+                        end with `_id`; otherwise the attribute would be used verbatim (e.g. the
+                        compatibility mode `created_by`).
 
  ## 3.0.1 (11-7-2015)
   * Joel Low          - Only declare the creator/updater/deleter associations when the table has
