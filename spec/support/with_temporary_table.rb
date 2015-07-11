@@ -20,11 +20,11 @@ module ActiveRecord::TemporaryTable::TestGroupHelpers
   # @param [Proc] proc The examples requiring the use of the temporary table.
   def with_temporary_table(table_name, &proc)
     context "with temporary table #{table_name}" do |*params|
-      before(:context) do
+      before(:each) do
         ActiveRecord::TemporaryTable::TestGroupHelpers.before_context(table_name, send(table_name))
       end
 
-      after(:context) do
+      after(:each) do
         ActiveRecord::TemporaryTable::TestGroupHelpers.after_context(table_name)
       end
 

@@ -30,7 +30,7 @@ RSpec.describe 'Migration helpers', type: :model do
   end
 
   context 'when overridden attribute names are used' do
-    before(:context) do
+    before(:each) do
       ActiveRecord::Userstamp.configure do |config|
         config.creator_attribute = :created_by
         config.updater_attribute = :updated_by
@@ -40,7 +40,7 @@ RSpec.describe 'Migration helpers', type: :model do
         stampable
       end
     end
-    after(:context) do
+    after(:each) do
       ActiveRecord::Userstamp.configure do |config|
         config.creator_attribute = :creator_id
         config.updater_attribute = :updater_id
