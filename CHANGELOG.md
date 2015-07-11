@@ -1,4 +1,10 @@
  # Changelog
+ ## 3.0.2
+  * Joel Low          - Internally change the stamper for a stamper class to use a stack instead
+                        of only one value. This allows setting a value for tests, and controller
+                        specs would reset the default test stamper when the controller test
+                        finishes running.
+
  ## 3.0.1 (11-7-2015)
   * Joel Low          - Only declare the creator/updater/deleter associations when the table has
                         the attribute columns. If the columns cannot be determined (e.g. if the
