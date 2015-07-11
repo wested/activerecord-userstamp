@@ -27,7 +27,7 @@ In addition to these, I have cherry picked ideas and changes from the following 
  - [konvenit](https://github.com/konvenit/userstamp)
 
 Finally, this gem only supports Ruby 2.0 and above. Yes, you really should upgrade to a supported
-version of Ruby.
+version of Ruby. This gem is tested only on Rails 4.2; but it should work with Rails 4+.
 
 ## Features
 ### Soft-deletes
@@ -57,7 +57,8 @@ Do create a ticket if it is broken, with a pull-request if possible.
 While examining the userstamp gem's network on Github, it was noticed that quite a few forks were
 made to allow customisability in the name and type of the column with the database migration.
 
-This gem now supports customised column names.
+This gem now supports customised column names. See the [usage](#usage) section on the
+configuration options supported.
 
 ### Saving before validation
 This fork includes changes to perform model stamping before validation. This allows models to

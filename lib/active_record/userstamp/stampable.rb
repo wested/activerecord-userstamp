@@ -68,21 +68,23 @@ module ActiveRecord::Userstamp::Stampable
 
     # Defines the associations for Userstamp.
     def add_userstamp_associations(options)
-      config = ActiveRecord::Userstamp.config
-      klass = stamper_class.try(:name)
-      relation_options = options.reverse_merge(class_name: klass)
-
       ActiveRecord::Userstamp::Utilities.remove_association(self, :creator)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :updater)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :deleter)
 
-      belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute)
-      belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute)
+      associations = ActiveRecord::Userstamp::Utilities.available_association_columns(self)
+      return if associations.nil?
 
-      if config.deleter_attribute
-        remove_method(:deleter) if method_defined?(:deleter)
-        belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute)
-      end
+      config = ActiveRecord::Userstamp.config
+      klass = stamper_class.try(:name)
+      relation_options = options.reverse_merge(class_name: klass)
+
+      belongs_to :creator, relation_options.reverse_merge(foreign_key: config.creator_attribute) if
+        associations.first
+      belongs_to :updater, relation_options.reverse_merge(foreign_key: config.updater_attribute) if
+        associations.second
+      belongs_to :deleter, relation_options.reverse_merge(foreign_key: config.deleter_attribute) if
+        associations.third
     end
   end
 

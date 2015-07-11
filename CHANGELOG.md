@@ -1,4 +1,9 @@
  # Changelog
+ ## 3.0.1
+  * Joel Low          - Only declare the creator/updater/deleter associations when the table has
+                        the attribute columns. If the columns cannot be determined (e.g. if the
+                        table has not been defined, such as during tests), then the model would
+                        need to explicitly call `stampable`.
 
  ## 3.0.0 (10-7-2015)
   * Joel Low          - Remove `compatibility_mode`. Use the `creator_attribute`,

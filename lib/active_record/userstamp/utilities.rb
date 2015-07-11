@@ -1,4 +1,9 @@
 module ActiveRecord::Userstamp::Utilities
+  # Removes the association methods from the model.
+  #
+  # @param [Class] model The model to remove methods from.
+  # @param [Symbol] association The name of the association to remove.
+  # @return [void]
   def self.remove_association(model, association)
     methods = [
       association,
@@ -13,6 +18,23 @@ module ActiveRecord::Userstamp::Utilities
         remove_method(method) if method_defined?(method)
       end
     end
+  end
+
+  # Obtains the creator/updater/deleter columns which are present in the model.
+  #
+  # @param [Class] model The model to query.
+  # @return [nil|Array<(bool, bool, bool)>] Nil if the model does not have a table defined.
+  #   Otherwise, a tuple of booleans indicating the presence of the created, updated, and deleted
+  #   columns.
+  def self.available_association_columns(model)
+    columns = Set[*model.column_names]
+    config = ActiveRecord::Userstamp.config
+
+    [config.creator_attribute.present? && columns.include?(config.creator_attribute.to_s),
+     config.updater_attribute.present? && columns.include?(config.updater_attribute.to_s),
+     config.deleter_attribute.present? && columns.include?(config.deleter_attribute.to_s)]
+  rescue ActiveRecord::StatementInvalid => _
+    nil
   end
 end
 
