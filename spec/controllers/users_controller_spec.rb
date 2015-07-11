@@ -4,10 +4,6 @@ RSpec.describe UsersController, type: :controller do
   controller do
   end
 
-  before(:each) do
-    reset_to_defaults
-  end
-
   context 'when updating a User' do
     it 'sets the correct updater' do
       request.session = { user_id: @hera.id }

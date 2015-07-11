@@ -31,6 +31,7 @@ RSpec.describe 'Stamper' do
 
     context 'when the stamper is nil' do
       it 'resets the stamper' do
+        User.stamper = nil
         expect(User.stamper).to be(nil)
       end
     end

@@ -4,9 +4,7 @@ RSpec.describe PostsController, type: :controller do
   controller do
   end
 
-  before(:each) do
-    reset_to_defaults
-  end
+  before(:each) { define_first_post }
 
   context 'when updating a Post' do
     it 'sets the correct updater' do

@@ -17,11 +17,11 @@ class PostsController < ApplicationController
   end
 
   def set_stamper
-    Person.stamper = self.current_user
+    Person.push_stamper(current_user)
   end
 
   def reset_stamper
-    Person.reset_stamper
+    Person.pop_stamper
   end
 
   private

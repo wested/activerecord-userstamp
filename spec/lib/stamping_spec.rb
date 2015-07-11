@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Stamping', type: :model do
   before(:each) do
-    reset_to_defaults
-    User.stamper = @zeus
-    Person.stamper = @delynn
+    define_first_post
+    User.push_stamper(@zeus)
+    Person.push_stamper(@delynn)
   end
 
   context 'when creating a Person' do

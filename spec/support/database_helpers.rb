@@ -1,20 +1,22 @@
-def reset_to_defaults
-  create_test_models
+def define_first_post
+  @first_post = Post.create!(title: 'a title')
 end
 
-def create_test_models
-  User.delete_all
-  Person.delete_all
-  Post.delete_all
-  Comment.delete_all
+RSpec.configure do |config|
+  config.before(:each) do
+    User.delete_all
+    Person.delete_all
+    Post.delete_all
+    Comment.delete_all
+    User.reset_stamper
+    Person.reset_stamper
 
-  @zeus = User.create!(name: 'Zeus')
-  @hera = User.create!(name: 'Hera')
-  User.stamper = @zeus.id
+    @zeus = User.create!(name: 'Zeus')
+    @hera = User.create!(name: 'Hera')
+    User.push_stamper(@zeus.id)
 
-  @delynn = Person.create!(name: 'Delynn')
-  @nicole = Person.create!(name: 'Nicole')
-  Person.stamper = @delynn.id
-
-  @first_post = Post.create!(title: 'a title')
+    @delynn = Person.create!(name: 'Delynn')
+    @nicole = Person.create!(name: 'Nicole')
+    Person.push_stamper(@delynn.id)
+  end
 end
