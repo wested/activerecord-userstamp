@@ -95,29 +95,29 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   def set_creator_attribute
-    creator_attribute = ActiveRecord::Userstamp.config.creator_attribute
-    return if !has_stamper? || creator_attribute.nil? || !has_attribute?(creator_attribute)
+    attribute = ActiveRecord::Userstamp.config.creator_attribute
+    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
 
-    current_attribute_value = send(creator_attribute)
+    current_attribute_value = send(attribute)
     return if current_attribute_value.present?
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, creator_attribute)
+    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
   end
 
   def set_updater_attribute
-    updater_attribute = ActiveRecord::Userstamp.config.updater_attribute
-    return if !has_stamper? || updater_attribute.nil? || !has_attribute?(updater_attribute)
+    attribute = ActiveRecord::Userstamp.config.updater_attribute
+    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
 
     return if !self.new_record? && !self.changed?
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, updater_attribute)
+    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
   end
 
   def set_deleter_attribute
-    deleter_attribute = ActiveRecord::Userstamp.config.deleter_attribute
-    return if !has_stamper? || deleter_attribute.nil? || !has_attribute?(deleter_attribute)
+    attribute = ActiveRecord::Userstamp.config.deleter_attribute
+    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, deleter_attribute)
+    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
     save
   end
 end
