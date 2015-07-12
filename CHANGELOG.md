@@ -1,5 +1,5 @@
  # Changelog
- ## 3.0.2
+ ## 3.0.2 (12-7-2015)
   * Joel Low          - Depending on what was set to a stamper (ID or record object), the
                         association ID or association setter is used to assign the
                         creator/updater/deleter attributes. This only applies if the attributes
