@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe 'Stamping', type: :model do
   before(:each) do
     define_first_post
-    User.push_stamper(@zeus)
-    Person.push_stamper(@delynn)
+    User.stamper = @zeus
+    Person.stamper = @delynn
   end
 
   context 'when creating a Person' do
     context 'when the stamper is an object' do
       it 'sets using the the association' do
-        User.push_stamper(@zeus)
+        User.stamper = @zeus
         expect(User.stamper).to eq(@zeus)
 
         person = Person.new
@@ -80,7 +80,7 @@ RSpec.describe 'Stamping', type: :model do
 
     context 'when the stamper is an ID' do
       it 'sets using the the association ID' do
-        User.push_stamper(@zeus.id)
+        User.stamper = @zeus.id
         expect(User.stamper).to eq(@zeus.id)
 
         person = Person.new

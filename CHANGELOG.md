@@ -1,16 +1,17 @@
  # Changelog
  ## 3.0.2
-  * Joel Low          - Internally change the stamper for a stamper class to use a stack instead
-                        of only one value. This allows setting a value for tests, and controller
-                        specs would reset the default test stamper when the controller test
-                        finishes running.
   * Joel Low          - Depending on what was set to a stamper (ID or record object), the
                         association ID or association setter is used to assign the
                         creator/updater/deleter attributes. This only applies if the attributes
                         end with `_id`; otherwise the attribute would be used verbatim (e.g. the
                         compatibility mode `created_by`).
-  * Joel Low          - Ensure that the `set_stamper` and `reset_stamper` calls are always paired
-                        so that the stamper stack is always properly restored.
+  * Joel Low          - Provide a `with_stamper` method to specify the stamper for a given
+                        stamper class during the execution of the block.
+  * Joel Low          - Ensure that the `set_stamper` and `reset_stamper` calls from the
+                        controller are always paired so that the stamper state is always properly
+                        restored. `set_stamper` and `reset_stamper` is now deprecated and will be
+                        removed in ActiveRecord::Userstamp 3.1 and replaced with a single
+                        `with_stamper` `around_action` callback.
 
  ## 3.0.1 (11-7-2015)
   * Joel Low          - Only declare the creator/updater/deleter associations when the table has

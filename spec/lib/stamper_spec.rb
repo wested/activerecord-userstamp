@@ -44,20 +44,23 @@ RSpec.describe 'Stamper' do
     end
   end
 
-  describe '.push_stamper' do
-    it 'pushes the stamper onto the stack' do
-      stamper = User.create(name: 'Joel')
-      User.push_stamper(stamper)
-      expect(User.stamper).to eq(stamper)
+  describe '.with_stamper' do
+    context 'when within the block' do
+      it 'uses the correct stamper' do
+        stamper = User.create(name: 'Joel')
+        User.with_stamper(stamper) do
+          expect(User.stamper).to eq(stamper)
+        end
+      end
     end
-  end
 
-  describe '.pop_stamper' do
-    it 'pushes the stamper onto the stack' do
-      expect do
-        User.push_stamper(User.create(name: 'Joel'))
-        User.pop_stamper
-      end.not_to change { User.stamper }
+    context 'when exiting the block' do
+      it 'restores the stamper' do
+        expect do
+          User.with_stamper(User.create(name: 'Joel')) do
+          end
+        end.not_to change { User.stamper }
+      end
     end
   end
 end

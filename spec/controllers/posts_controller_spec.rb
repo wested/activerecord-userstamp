@@ -41,17 +41,4 @@ RSpec.describe PostsController, type: :controller do
       expect(controller.instance_variable_get(:@post).updater).to eq(@delynn)
     end
   end
-
-  context 'when the handler raises an exception' do
-    before { @stamper = Person.stamper }
-    it 'restores the correct stamper' do
-      begin
-        request.session = { person_id: @nicole.id }
-        post :create
-      rescue
-      end
-
-      expect(Person.stamper).to be(@stamper)
-    end
-  end
 end

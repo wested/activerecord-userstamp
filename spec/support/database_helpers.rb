@@ -13,10 +13,10 @@ RSpec.configure do |config|
 
     @zeus = User.create!(name: 'Zeus')
     @hera = User.create!(name: 'Hera')
-    User.push_stamper(@zeus.id)
+    User.stamper = @zeus.id
 
     @delynn = Person.create!(name: 'Delynn')
     @nicole = Person.create!(name: 'Nicole')
-    Person.push_stamper(@delynn.id)
+    Person.stamper = @delynn.id
   end
 end
