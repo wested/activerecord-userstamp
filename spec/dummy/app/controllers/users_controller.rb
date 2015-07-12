@@ -10,6 +10,10 @@ class UsersController < ApplicationController
     render(inline: "<%= @user.name %>")
   end
 
+  def create
+    fail
+  end
+
   private
 
   def user_params

@@ -9,6 +9,8 @@
                         creator/updater/deleter attributes. This only applies if the attributes
                         end with `_id`; otherwise the attribute would be used verbatim (e.g. the
                         compatibility mode `created_by`).
+  * Joel Low          - Ensure that the `set_stamper` and `reset_stamper` calls are always paired
+                        so that the stamper stack is always properly restored.
 
  ## 3.0.1 (11-7-2015)
   * Joel Low          - Only declare the creator/updater/deleter associations when the table has

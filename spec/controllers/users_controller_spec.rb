@@ -34,4 +34,17 @@ RSpec.describe UsersController, type: :controller do
       simulate_second_request
     end
   end
+
+  context 'when the handler raises an exception' do
+    before { @stamper = User.stamper }
+    it 'restores the correct stamper' do
+      begin
+        request.session = { user_id: @zeus.id }
+        post :create
+      rescue
+      end
+
+      expect(User.stamper).to be(@stamper)
+    end
+  end
 end

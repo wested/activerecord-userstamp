@@ -10,6 +10,10 @@ class PostsController < ApplicationController
     render(inline: "<%= @post.title %>")
   end
 
+  def create
+    fail
+  end
+
   protected
 
   def current_user
