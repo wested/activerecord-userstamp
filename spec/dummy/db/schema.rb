@@ -42,4 +42,13 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :deleted_by,     :integer
     t.column :deleted_at,     :datetime
   end
+
+  create_table :tags, force: true do |t|
+    t.column :title,          :string
+  end
+
+  create_table :post_tags, force: true do |t|
+    t.column :post_id,        :integer
+    t.column :tag_id,         :integer
+  end
 end

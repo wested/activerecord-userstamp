@@ -228,6 +228,18 @@ RSpec.describe 'Stamping', type: :model do
     end
   end
 
+  context 'when using a generated model' do
+    it 'does not query the model on the columns' do
+      class self.class::Post2 < Post
+      end
+      allow(self.class::Post2).to receive(:column_names).and_raise(StandardError)
+
+      class self.class::Post2
+        has_and_belongs_to_many :tags
+      end
+    end
+  end
+
   context 'when a deleter attribute is specified' do
     it 'creates a deleter relation' do
       expect(@first_post.respond_to?('creator')).to eq(true)

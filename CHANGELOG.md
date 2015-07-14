@@ -1,4 +1,8 @@
  # Changelog
+ ## 3.0.3
+  * Joel Low          - Allow using ActiveRecord-Userstamp with generated tables (e.g. 
+                        `has_and_belongs_to_many` join tables.)
+
  ## 3.0.2 (12-7-2015)
   * Joel Low          - Depending on what was set to a stamper (ID or record object), the
                         association ID or association setter is used to assign the
