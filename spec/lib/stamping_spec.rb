@@ -240,6 +240,17 @@ RSpec.describe 'Stamping', type: :model do
     end
   end
 
+  context 'when using an anonymous model' do
+    it 'does not query the model on the columns' do
+      post_3_class = Class.new(ActiveRecord::Base) do
+        def self.table_name
+          'Post'
+        end
+      end
+      expect(post_3_class.table_name).not_to be_empty
+    end
+  end
+
   context 'when a deleter attribute is specified' do
     it 'creates a deleter relation' do
       expect(@first_post.respond_to?('creator')).to eq(true)

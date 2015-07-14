@@ -27,7 +27,7 @@ module ActiveRecord::Userstamp::Utilities
   #   Otherwise, a tuple of booleans indicating the presence of the created, updated, and deleted
   #   columns.
   def self.available_association_columns(model)
-    return nil if model.table_name.empty?
+    return nil if model.name.nil? || model.table_name.empty?
     columns = Set[*model.column_names]
     config = ActiveRecord::Userstamp.config
 
