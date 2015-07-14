@@ -1,5 +1,5 @@
  # Changelog
- ## 3.0.3
+ ## 3.0.3 (14-7-2015)
   * Joel Low          - Allow using ActiveRecord-Userstamp with generated tables (e.g. 
                         `has_and_belongs_to_many` join tables.)
 
