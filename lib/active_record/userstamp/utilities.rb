@@ -15,7 +15,7 @@ module ActiveRecord::Userstamp::Utilities
 
     model.generated_association_methods.module_eval do
       methods.each do |method|
-        remove_method(method) if method_defined?(method)
+        remove_possible_method(method)
       end
     end
   end
