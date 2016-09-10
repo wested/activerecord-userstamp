@@ -19,12 +19,13 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   module ClassMethods
-    def inherited(klass)
-      super
+    def columns(*)
+      columns = super
+      return columns if defined?(@stamper_initialized) && @stamper_initialized
 
-      klass.class_eval do
-        add_userstamp_associations({})
-      end
+      @stamper_initialized = true
+      add_userstamp_associations({})
+      columns
     end
 
     # This method customizes how the gem functions. For example:
