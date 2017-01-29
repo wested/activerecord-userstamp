@@ -20,21 +20,19 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   if ENV['CI'] == 'true'
-    rails_version = ENV['RAILS_VERSION'] || 'default'
-
-    rails_version = case rails_version
-            when 'default'
-              '>= 4.0'
-            else
-              "~> #{rails_version}"
-    end
+    rails_version =
+      case ENV['RAILS_VERSION']
+      when nil, ''
+        '>= 4.0'
+      else
+        "~> #{ENV['RAILS_VERSION']}"
+      end
   else
     rails_version = '>= 4.0'
   end
 
   s.add_dependency 'rails', rails_version
 
-  s.add_development_dependency 'actionview', rails_version
   s.add_development_dependency 'tzinfo-data'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
