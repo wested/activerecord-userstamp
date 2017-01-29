@@ -7,24 +7,24 @@ rvm:
   - 2.3.1
   - ruby-head
 env:
-  - "RAILS_VERSION=4.0"
-  - "RAILS_VERSION=4.1"
-  - "RAILS_VERSION=4.2"
-  - "RAILS_VERSION=5.0"
+  - "RAILS_VERSION=4.0.0"
+  - "RAILS_VERSION=4.1.0"
+  - "RAILS_VERSION=4.2.0"
+  - "RAILS_VERSION=5.0.0"
 matrix:
   allow_failures:
     - rvm: ruby-head
   exclude:
     - rvm: 2.0.0
-      env: "RAILS_VERSION=5.0"
+      env: "RAILS_VERSION=5.0.0"
     - rvm: 2.1.9
-      env: "RAILS_VERSION=5.0"
+      env: "RAILS_VERSION=5.0.0"
     - rvm: ruby-head
-      env: "RAILS_VERSION=4.0"
+      env: "RAILS_VERSION=4.0.0"
     - rvm: ruby-head
-      env: "RAILS_VERSION=4.1"
+      env: "RAILS_VERSION=4.1.0"
     - rvm: ruby-head
-      env: "RAILS_VERSION=4.2"
+      env: "RAILS_VERSION=4.2.0"
 
 bundler_args: "--jobs=3 --retry=3"
 cache: bundler
