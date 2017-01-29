@@ -23,7 +23,6 @@ module ActiveRecord::Userstamp::Stampable
       columns = super
       return columns if defined?(@stamper_initialized) && @stamper_initialized
 
-      @stamper_initialized = true
       add_userstamp_associations({})
       columns
     end
@@ -69,6 +68,7 @@ module ActiveRecord::Userstamp::Stampable
 
     # Defines the associations for Userstamp.
     def add_userstamp_associations(options)
+      @stamper_initialized = true
       ActiveRecord::Userstamp::Utilities.remove_association(self, :creator)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :updater)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :deleter)
