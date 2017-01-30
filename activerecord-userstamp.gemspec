@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', rails_version
 
-  s.add_development_dependency 'tzinfo-data'
+  s.add_development_dependency 'tzinfo-data' if RUBY_PLATFORM =~ /mswin|mingw/
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rspec-rails', '>= 3.3'
