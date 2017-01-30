@@ -35,7 +35,7 @@ module CoverageHelper
       new_formatter = [*expand_formatter(new_formatter)]
       formatters = old_formatter + new_formatter
 
-      SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[*formatters]
+      SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
     end
 
     # Extracts the formatters from a MultiFormatter so we do not nest them.
