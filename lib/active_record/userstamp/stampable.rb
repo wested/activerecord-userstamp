@@ -19,12 +19,12 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   module ClassMethods
-    def inherited(klass)
-      super
+    def columns(*)
+      columns = super
+      return columns if defined?(@stamper_initialized) && @stamper_initialized
 
-      klass.class_eval do
-        add_userstamp_associations({})
-      end
+      add_userstamp_associations({})
+      columns
     end
 
     # This method customizes how the gem functions. For example:
@@ -68,6 +68,7 @@ module ActiveRecord::Userstamp::Stampable
 
     # Defines the associations for Userstamp.
     def add_userstamp_associations(options)
+      @stamper_initialized = true
       ActiveRecord::Userstamp::Utilities.remove_association(self, :creator)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :updater)
       ActiveRecord::Userstamp::Utilities.remove_association(self, :deleter)
