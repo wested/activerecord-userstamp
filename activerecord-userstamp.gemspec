@@ -23,12 +23,12 @@ Gem::Specification.new do |s|
     rails_version =
       case ENV['RAILS_VERSION']
       when nil, ''
-        '>= 4.0'
+        '>= 4.1'
       else
         "~> #{ENV['RAILS_VERSION']}"
       end
   else
-    rails_version = '>= 4.0'
+    rails_version = '>= 4.1'
   end
 
   s.add_dependency 'rails', rails_version
