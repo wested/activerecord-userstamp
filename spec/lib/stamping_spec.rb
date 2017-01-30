@@ -134,7 +134,7 @@ RSpec.describe 'Stamping', type: :model do
         User.stamper = @hera
         expect(User.stamper).to eq(@hera)
 
-        @delynn.name << " Berry"
+        @delynn.name = @delynn.name + " Berry"
         @delynn.save
         @delynn.reload
         expect(@delynn.creator).to eq(@zeus)
@@ -149,7 +149,7 @@ RSpec.describe 'Stamping', type: :model do
         User.stamper = @hera.id
         expect(User.stamper).to eq(@hera.id)
 
-        @delynn.name << " Berry"
+        @delynn.name = @delynn.name + " Berry"
         @delynn.save
         @delynn.reload
         expect(@delynn.creator_id).to eq(@zeus.id)
@@ -184,7 +184,7 @@ RSpec.describe 'Stamping', type: :model do
         Person.stamper = @nicole.id
         expect(Person.stamper).to eq(@nicole.id)
 
-        @first_post.title << " - Updated"
+        @first_post.title = @first_post.title + " - Updated"
         @first_post.save
         @first_post.reload
         expect(@first_post.creator_id).to eq(@delynn.id)
@@ -199,7 +199,7 @@ RSpec.describe 'Stamping', type: :model do
         Person.stamper = @nicole
         expect(Person.stamper).to eq(@nicole)
 
-        @first_post.title << " - Updated"
+        @first_post.title = @first_post.title + " - Updated"
         @first_post.save
         @first_post.reload
         expect(@first_post.creator_id).to eq(@delynn.id)

@@ -23,17 +23,17 @@ Gem::Specification.new do |s|
     rails_version =
       case ENV['RAILS_VERSION']
       when nil, ''
-        '>= 4.0'
+        '>= 4.1'
       else
         "~> #{ENV['RAILS_VERSION']}"
       end
   else
-    rails_version = '>= 4.0'
+    rails_version = '>= 4.1'
   end
 
   s.add_dependency 'rails', rails_version
 
-  s.add_development_dependency 'tzinfo-data'
+  s.add_development_dependency 'tzinfo-data' if RUBY_PLATFORM =~ /mswin|mingw/
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rspec-rails', '>= 3.3'
