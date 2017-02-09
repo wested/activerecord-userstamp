@@ -96,29 +96,32 @@ module ActiveRecord::Userstamp::Stampable
   end
 
   def set_creator_attribute
-    attribute = ActiveRecord::Userstamp.config.creator_attribute
-    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
+    return unless has_stamper?
 
-    current_attribute_value = send(attribute)
-    return if current_attribute_value.present?
+    creator_association = self.class.reflect_on_association(:creator)
+    return unless creator_association
+    return if creator.present?
 
-    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :creator, attribute)
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, creator_association)
   end
 
   def set_updater_attribute
-    attribute = ActiveRecord::Userstamp.config.updater_attribute
-    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
+    return unless has_stamper?
 
-    return if !self.new_record? && !self.changed?
+    updater_association = self.class.reflect_on_association(:updater)
+    return unless updater_association
+    return if !new_record? && !changed?
 
-    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :updater, attribute)
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, updater_association)
   end
 
   def set_deleter_attribute
-    attribute = ActiveRecord::Userstamp.config.deleter_attribute
-    return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
+    return unless has_stamper?
 
-    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :deleter, attribute)
+    deleter_association = self.class.reflect_on_association(:deleter)
+    return unless deleter_association
+
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, deleter_association)
     save
   end
 end
