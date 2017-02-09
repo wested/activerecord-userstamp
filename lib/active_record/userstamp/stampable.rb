@@ -102,7 +102,7 @@ module ActiveRecord::Userstamp::Stampable
     current_attribute_value = send(attribute)
     return if current_attribute_value.present?
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :creator, attribute)
   end
 
   def set_updater_attribute
@@ -111,14 +111,14 @@ module ActiveRecord::Userstamp::Stampable
 
     return if !self.new_record? && !self.changed?
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :updater, attribute)
   end
 
   def set_deleter_attribute
     attribute = ActiveRecord::Userstamp.config.deleter_attribute
     return if !has_stamper? || attribute.nil? || !has_attribute?(attribute)
 
-    ActiveRecord::Userstamp::Utilities.assign_attribute(self, attribute)
+    ActiveRecord::Userstamp::Utilities.assign_stamper(self, :deleter, attribute)
     save
   end
 end
