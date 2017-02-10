@@ -38,18 +38,22 @@ module ActiveRecord::Userstamp::Utilities
     nil
   end
 
-  # Assigns the given attribute to the record, based on the model's stamper.
+  # Assigns the stamper to the given association reflection in the record.
   #
-  # If the stamper is a record, then it is assigned to the attribute; if it is a number, then it
-  # is assigned to the +_id+ attribute
+  # If the stamper is a record, then it is assigned to the association; if it is a number, then it
+  # is assigned to the foreign key.
   #
   # @param [ActiveRecord::Base] record The record to assign.
-  # @param [Symbol] attribute The attribute to assign.
-  def self.assign_attribute(record, attribute)
-    attribute = attribute.to_s
+  # @param [ActiveRecord::Reflection] association The association to assign
+  def self.assign_stamper(record, association)
     stamp_value = record.class.stamper_class.stamper
+    attribute =
+      if stamp_value.is_a?(ActiveRecord::Base)
+        association.name
+      else
+        association.foreign_key
+      end
 
-    attribute = attribute[0..-4] if !stamp_value.is_a?(Fixnum) && attribute.end_with?('_id')
     record.send("#{attribute}=", stamp_value)
   end
 end
