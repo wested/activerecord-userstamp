@@ -116,6 +116,14 @@ Ensure that each model has a set of columns for creators, updaters, and deleters
   end
 ```
 
+If you use `protect_from_forgery`, make sure the hooks are prepended:
+
+```ruby
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception, prepend: true # with: anything will do, note `prepend: true`!
+end
+```
+
 Declare the stamper on the User model:
 
 ```ruby
