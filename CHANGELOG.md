@@ -1,4 +1,10 @@
  # Changelog
+ ## 3.0.5 (22-8-2017)
+  * Jonathan Putney   - Support Rails 5.0.
+  * Joel Low          - Add additional combinations to Travis build matrix.
+  * Joel Low          - Defer association definitions until the schema is loaded.
+  * Joel Low          - Respect custom stamper definitions.
+
  ## 3.0.4 (14-7-2015)
   * Joel Low          - Allow using ActiveRecord-Userstamp with anonymous models (e.g. some 
                         `has_and_belongs_to_many` join tables.)
