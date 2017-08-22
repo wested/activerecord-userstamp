@@ -19,16 +19,13 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ['lib']
 
+  rails_version = '>= 5.0'
   if ENV['CI'] == 'true'
-    rails_version =
-      case ENV['RAILS_VERSION']
-      when nil, ''
-        '>= 4.1'
-      else
-        "~> #{ENV['RAILS_VERSION']}"
-      end
-  else
-    rails_version = '>= 4.1'
+    case ENV['RAILS_VERSION']
+    when nil, ''
+    else
+      rails_version = "~> #{ENV['RAILS_VERSION']}"
+    end
   end
 
   s.add_dependency 'rails', rails_version
