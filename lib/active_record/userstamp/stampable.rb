@@ -113,7 +113,7 @@ module ActiveRecord::Userstamp::Stampable
 
     updater_association = self.class.reflect_on_association(:updater)
     return unless updater_association
-    return if !new_record? && !changed?
+    return if !new_record? && !has_changes_to_save?
 
     ActiveRecord::Userstamp::Utilities.assign_stamper(self, updater_association)
   end
