@@ -88,6 +88,7 @@ ActiveRecord::Userstamp.configure do |config|
   # config.creator_attribute = :creator_id
   # config.updater_attribute = :updater_id
   config.deleter_attribute = nil
+  # config.association_optional = false
 end
 ```
 
@@ -148,6 +149,11 @@ be customised. Also, the stamper used by each class can also be customised. For 
 The `stampable` method allows you to customize the `creator`, `updater`, and `deleter` associations.
 It also allows you to specify the name of the stamper for the class being declared. Any additional
 arguments are passed to the `belongs_to` declaration.
+
+### Association requirement
+By default the association is created and required, so if you want to disable association validation,
+you need to set `association_optional` configuration to `true`, to build a `belongs_to` with
+`optional: true` option.
 
 ## Upgrading
 ### Upgrading from delynn's 1.x/2.x with `compatibility_mode`

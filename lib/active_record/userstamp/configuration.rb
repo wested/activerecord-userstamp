@@ -46,4 +46,11 @@ module ActiveRecord::Userstamp::Configuration
   #   By default, this is set to +:deleter_id+.
   mattr_accessor :deleter_attribute
   self.deleter_attribute = :deleter_id
+
+  # !@attribute [rw] association_optional
+  #   Determines if association is required.
+  #
+  #   By default, this is set to +:false+.
+  mattr_accessor :association_optional
+  self.association_optional = false
 end
